@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>FFC Login</title>
+    <style>
+    body{
+      margin: 0;
+      padding: 0;
+      /* background: url("https://www.wallpaperup.com/uploads/wallpapers/2018/03/23/1239149/1b1dca24781f4d058119fe6feea69b46-1000.jpg"); */
+      font-family: sans-serif;
+    }
+
+    .backL{
+      width: 504px;
+      height: 424px;
+      background: rgb(0, 0, 0);
+      top: 40%;
+      left: 50%;
+      border-radius: 10%;
+      position: absolute;
+      transform: translate(-50%,-50%);
+      box-sizing: border-box;
+    }
+    .LoginBox{
+      width: 500px;
+      height: 420px;
+      background: #EABA5B;
+      border-radius: 10%;
+      color: #fff;
+      top: 40%;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%,-50%);
+      box-sizing: border-box;
+      padding: 20px 30px;
+    }
+    .lig{
+      margin: 0;
+      padding: 0 0 20px;;
+      text-align: center;
+      color:rgb(227, 228, 252);
+    }
+
+    .LoginBox p{
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+    }
+    .LoginBox input{
+      width: 85%;
+      margin-bottom: 20px;
+      padding: 0 10px;
+      border: none;
+      /* border-bottom: 1px solid #fff; */
+      /* //background: transparent; */
+      outline: none;
+      height: 40px;
+      font-size: 16px;
+      border-radius: 10px;
+    }
+    button{
+      border: none;
+      outline: none;
+      height: 40px;
+      background: #fb2525;
+      color: #fff;
+      font-size: 18px;
+      width: 100%;
+      border-radius: 20px;
+      margin: 10px 0;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="backL"></div>
+    <div class="LoginBox">
+      <h1 class="lig">Register</h1>
+      <% if(message.length>0) {%>
+        <div class="alert">
+          <%=message%>
+        </div>
+      <%}%>
+      <form class="Aform" action="/register" method="POST">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <p>Email</p>
+                <input type="email" name="email" placeholder="Enter Email">
+              </td>
+              <td>              
+                <p>Password</p>
+                <input type="password" name="password" placeholder="Enter Password">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Name</p>
+                <input type="text" id="Names" name="Names" placeholder="Enter Name(s)">
+              </td>
+              <td>             
+                  <p>Last Name</p>
+                  <input type="text" id="LastNames" name="LastNames" placeholder="Enter Last Name">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Job</p>
+                <input type="text" id="Jobs" name="Jobs" placeholder="Enter job number">
+              </td>
+              <td>
+                  <p>Phone</p>
+                  <input type="text" id="Phones" name="Phones" placeholder="Enter Phone number">
+              </td>
+            </tr>           
+          </tbody>
+        </table>        
+        <button type="submit">
+          SignIn
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

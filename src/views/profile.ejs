@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Name:</h1>
+    <h2><%= user.local.UName %></h2>
+    <h2><%= user.local.ULastName %></h2>
+    <h1>Phone:</h1>
+    <h2><%= user.local.UPhone %></h2>
+    <h1>Emai:</h1>
+    <h2><%= user.local.email %></h2>
+    <h1>Password:</h1>
+    <h2><%= user.local.password %></h2>
+
+    <form action="/logout" method="GET">
+        <button type="submit">LogOut</button>
+    </form>
+</body>
+</html>
