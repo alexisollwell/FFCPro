@@ -29,9 +29,29 @@ module.exports= (app,passport)=>{
         });
     });
 
+    app.get('/menu', islogged ,(req,res)=>{
+        res.render('menu',{
+            user:req.user
+        });
+    });
+
     app.get('/logout',(req,res)=>{
         req.logout();
         res.redirect('/');
+    });
+
+    app.get('/menu/agregar', islogged, (req,res)=>{
+        res.render('agregarMenu',{
+            user: req.user
+        })
+    });
+
+    app.post('/menu/agregar', islogged, (req,res)=>{
+        const{nombre}= req.body
+        const newLink = { nombre}
+        console.log(req.body)
+
+        res.redirect('/menu')
     });
 };
 
