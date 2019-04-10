@@ -5,7 +5,8 @@ const menuSchema = new mongoose.Schema({
         Mtitulo : String,
         Mdescripcion : String,
         Mprecio: Number,
-        Mtiempo: Date
+        Mtiempo: Number,
+        Mfoto : String
     }
 });
 

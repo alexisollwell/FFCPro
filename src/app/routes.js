@@ -1,3 +1,4 @@
+const Menu = require("../app/models/menu");
 module.exports= (app,passport)=>{
     app.get('/',(req,res)=>{
         res.render('index',{
@@ -47,11 +48,24 @@ module.exports= (app,passport)=>{
     });
 
     app.post('/menu/agregar', islogged, (req,res)=>{
-        const{nombre}= req.body
-        const newLink = { nombre}
-        console.log(req.body)
-
-        res.redirect('/menu')
+        var correcto = true;
+        console.log(req.foto)
+        const newMenu = new Menu();
+        newMenu.local.Mtitulo  = req.body.nombre;
+        newMenu.local.Mdescripcion = req.body.descripcion;
+        newMenu.local.Mprecio= req.body.precio;
+        newMenu.local.Mtiempo= req.body.time;
+        // newMenu.local.Mfoto = req.body.
+        
+        // newMenu.save(function(err){
+        //     if(err){console.log(err); correcto = false;}
+        // });
+       
+        if(correcto){
+            res.redirect('/menu')
+        }else{
+            res.render('/menu/agregar',req.flash("loginMessage","No se pudo guardar el alimento, intente nuevamente."));
+        }
     });
 };
 

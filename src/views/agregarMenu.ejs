@@ -75,9 +75,9 @@
   <body>
     <div class="backL"></div>
     <div class="LoginBox">
-      <h1 class="lig">Register</h1>
+      <h1 class="lig">Register <%= user.local.UName %></h1>
 
-      <form class="Aform" method="POST">
+      <form class="Aform" method="POST" >
         <table>
           <tbody>
             <tr>
@@ -99,11 +99,15 @@
                   <p>Tiempo preparacion</p>
                   <input type="number" id="time" max="50" min="0" name="time" placeholder="Agregar tiempo">
               </td>
+              <td>
+                <p>Foto</p>
+                <input type="file" id="foto" name="foto" />
+              </td>
             </tr>          
           </tbody>
         </table>        
         <button type="submit">
-          SignIn
+          Agregar
         </button>
       </form>
     </div>

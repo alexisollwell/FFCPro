@@ -13,7 +13,7 @@
      <script src="/JS/cocina.js"></script>
     <title>Cocina</title>
 </head>
-<body class="orange lighten-3">
+<body class="orange lighten-3" style="margin-top:20px;">
     <div class="container z-depth-1 grey">
         <div class="row">
             <div class="col s12 m4">
@@ -26,9 +26,14 @@
                         </div>
                         <div class="divider"></div>
                         <h5 id="h_total">Total: $0</h5>
-                        <label>Cajero: nombre cajero</label>
+                        <label>Cajero: <%= user.local.UName %> <%= user.local.ULastName %></label>
                     </div>
                 </div>
+                    <div class="col s12">
+                        
+                        <button class="green col s6 btn">Guardar</button>
+                        <button class="red col s6 btn" onclick="reiniciarCuenta()">Descartar</button>
+                    </div>
             </div>
             <div class="col s12 m8 white rounded" >
                 <div class="col s6">
@@ -120,6 +125,9 @@
 }
 .padLess{
     padding: 8px !important;
+}
+.redHover:hover{
+    background-color: red;
 }
 </style>
 </html>
