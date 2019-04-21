@@ -30,6 +30,19 @@ module.exports= (app,passport)=>{
         });
     });
 
+    app.get('/Usuarios',islogged, (req,res)=>{
+        res.render('UsuariosManager',{
+            user:req.user,
+            message: req.flash('signupMessage')
+        });
+    });
+
+    app.post('/Usuarios',passport.authenticate('local-signup',{
+        successRedirect:'/Usuarios',
+        failureRedirect:'/Usuarios',
+        failureFlash:true
+    }));
+
     app.get('/menu', islogged ,(req,res)=>{
         res.render('menu',{
             user:req.user
