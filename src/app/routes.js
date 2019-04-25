@@ -14,6 +14,7 @@ module.exports= (app,passport)=>{
 
     app.get('/register',(req,res)=>{
         res.render('registrar',{
+            title: "",
             message: req.flash('signupMessage')
         });
     });
@@ -26,12 +27,14 @@ module.exports= (app,passport)=>{
 
     app.get('/profile', islogged ,(req,res)=>{
         res.render('profile',{
+            title: "",
             user:req.user
         });
     });
 
     app.get('/Usuarios',islogged, (req,res)=>{
         res.render('UsuariosManager',{
+            title: "",
             user:req.user,
             message: req.flash('signupMessage')
         });
@@ -56,6 +59,7 @@ module.exports= (app,passport)=>{
 
     app.get('/menu/agregar', islogged, (req,res)=>{
         res.render('agregarMenu',{
+            title: "",
             user: req.user
         })
     });
