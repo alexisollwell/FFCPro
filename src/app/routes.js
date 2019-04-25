@@ -1,4 +1,6 @@
 const Menu = require("../app/models/menu");
+const UsersData = require("../app/models/user");
+
 module.exports= (app,passport)=>{
     app.get('/',(req,res)=>{
         res.render('index',{
@@ -31,9 +33,13 @@ module.exports= (app,passport)=>{
     });
 
     app.get('/Usuarios',islogged, (req,res)=>{
-        res.render('UsuariosManager',{
-            user:req.user,
-            message: req.flash('signupMessage')
+        UsersData.find()
+        .then(function(doc) {
+            res.render('UsuariosManager', {
+                items: doc,
+                user:req.user,
+                message: req.flash('signupMessage')
+            });
         });
     });
 
@@ -47,6 +53,32 @@ module.exports= (app,passport)=>{
         res.render('menu',{
             user:req.user
         });
+    });
+
+    app.get('/EditUser', islogged ,(req,res)=>{
+        var id = req.query.id;
+        UsersData.findById(id, function(err, doc) {
+            if (err) {
+            console.error('error, no entry found');
+            }
+            res.render('EditUser',{
+                items:doc,
+                user:req.user,
+            });
+        })      
+    });
+
+    app.post('/EditUser', islogged ,(req,res)=>{
+        var id = req.query.id;
+        UsersData.findById(id, function(err, doc) {
+            if (err) {
+            console.error('error, no entry found');
+            }
+            res.render('EditUser',{
+                user:req.user,
+                items:doc
+            });
+        })      
     });
 
     app.get('/logout',(req,res)=>{

@@ -158,46 +158,16 @@
             <h4 class="titleEdit">Lista de Empleados</h4>
             <div class="editEmployee">
                 <ul class="collection">
-                    <li class="collection-item avatar">
-                        <img src="/images/user.png" alt="" class="circle">
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
-                        <img src="/images/user.png" alt="" class="circle">
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
-                        <img src="/images/user.png" alt="" class="circle">
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
-                        <img src="/images/user.png" alt="" class="circle">
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
+                    <% items.forEach(function(user) { %>
+                        <li class="collection-item avatar" onclick="window.open('/EditUser/?id=<%= user._id %>','_self')">
                             <img src="/images/user.png" alt="" class="circle">
-                            <span class="title">Title</span>
-                            <p>First Line <br>
-                                Second Line
+                            <p><%= user.local.UName %></p>
+                            <p><%= user.local.ULastName %><br>
+                                <%= user.local.email %>
                             </p>
-                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                        </li>
+                            <a href="" class="secondary-content"><i class="material-icons">grade</i></a>
+                        </li>                  
+                    <% }); %>
                 </ul>
             </div>
         </div>
