@@ -22,7 +22,7 @@ module.exports = function(passport){
         User.findOne({"local.email":email},function(err,user){
             if(err){return done(err);}
             if(user){
-                return done(null,false,req.flash("signupMessage","This email is already taken"))
+                return done(null,false,req.flash("signupMessage","Este correo ya ha sido registrado"))
             }else{
                 var newUser = new User();
                 newUser.local.email=email;
@@ -35,7 +35,7 @@ module.exports = function(passport){
                 newUser.save(function(err){
                     if(err){throw err;}
                     else{
-                        done(null,newUser);
+                        done(null);
                     }
                 });
             }
