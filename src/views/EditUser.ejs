@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/EditUser" method="POST">
+
+            <input type="text" value="<%= items.local.UName %>" id="name">
+            <input type="text" value="<%= items.local.ULastName %>" id="lastname">
+            <input type="number" value="<%= items.local.UPhone %>" id="phone">
+            <input type="email" value="<%= items.local.email %>" id="email">
+            <h1>nueva contraseña</h1>
+            <input type="text" id="contraseña">
+        <button type="submit">
+            Actualizar
+        </button>
+    </form>  
+</body>
+</html>

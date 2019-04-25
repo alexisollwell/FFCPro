@@ -28,7 +28,7 @@
                 <label for="LastNames">Apellidos</label>
             </div>
             <div class="input-field col s12 m6">
-                <select>
+                <select name="Jobs">
                     <option value="0" disabled selected>Seleccione una opción</option>
                     <option value="1">Administrador</option>
                     <option value="2">Cajero</option>
@@ -41,7 +41,7 @@
                 <label for="Phones">Telefono</label>
             </div>         
           <button class="btn col s12 red darked-3" style="margin-bottom: 10px;" type="submit">
-            SignIn
+            Registrar
           </button>
         </form>
             </div>
@@ -52,79 +52,16 @@
             <div class="divider"></div>
             <div class="overflowContent" style="overflow: auto;" >
                 <ul class="collection">
-                    <li class="collection-item avatar">
-                        <img src="/images/user.png" alt="" class="circle">
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
-                        <img src="/images/user.png" alt="" class="circle">
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
-                        <img src="/images/user.png" alt="" class="circle">
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
-                        <img src="/images/user.png" alt="" class="circle">
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
+                    <% items.forEach(function(user) { %>
+                        <li class="collection-item avatar" >
                             <img src="/images/user.png" alt="" class="circle">
-                            <span class="title">Title</span>
-                            <p>First Line <br>
-                                Second Line
+                            <p><%= user.local.UName %></p>
+                            <p><%= user.local.ULastName %><br>
+                                <%= user.local.email %>
                             </p>
-                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                        </li>
-                        <li class="collection-item avatar">
-                                <img src="/images/user.png" alt="" class="circle">
-                                <span class="title">Title</span>
-                                <p>First Line <br>
-                                    Second Line
-                                </p>
-                                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                            </li>
-
-                            <li class="collection-item avatar">
-                                    <img src="/images/user.png" alt="" class="circle">
-                                    <span class="title">Title</span>
-                                    <p>First Line <br>
-                                        Second Line
-                                    </p>
-                                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                                </li>
-                                <li class="collection-item avatar">
-                                        <img src="/images/user.png" alt="" class="circle">
-                                        <span class="title">Title</span>
-                                        <p>First Line <br>
-                                            Second Line
-                                        </p>
-                                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                            <img src="/images/user.png" alt="" class="circle">
-                                            <span class="title">Title</span>
-                                            <p>First Line <br>
-                                                Second Line
-                                            </p>
-                                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                                        </li>
+                            <a class="secondary-content" href="/EditUser/?id=<%= user._id %>"><i class="material-icons">create</i></a>
+                        </li>                  
+                    <% }); %>
                 </ul>
             </div>
         </div>
