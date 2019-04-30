@@ -3,13 +3,15 @@
 <% include ./partials/head %>
 <body>
     <% include ./partials/nav %>
-    <% include ./partials/msg %>
     <div class="row">
         <br>
         <div class="col s12 m6">
             <h4 class="Rheader center-align">Agregar Empleado</h4>
             <div class="container">
-                    <div class="divider"></div>
+                <div class="divider"></div>
+                <div class="Rheader center-align">
+                    <% include ./partials/msg %>
+                </div>
         <form class="Aform" action="/Usuarios" method="POST">
             <div class="input-field col s12 m6">
                <input type="email" name="email" required="">
