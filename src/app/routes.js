@@ -69,22 +69,54 @@ module.exports= (app,passport)=>{
                 title:"",
                 items:doc,
                 user:req.user,
+                message:"",
             });
         })      
     });
 
     app.post('/EditUser', islogged ,(req,res)=>{
-        var id = req.query.id;
-        UsersData.findById(id, function(err, doc) {
-            if (err) {
-            console.error('error, no entry found');
-            }
-            res.render('EditUser',{
-                title:"",
-                user:req.user,
-                items:doc
-            });
-        })      
+        if(req.body.tipo=="updateData"){
+            console.log("up");
+            var id = req.body.idt;
+            UsersData.findById(id, function(err, doc) {
+                if (err) {
+                console.error('error, no entry found');
+                }
+                doc.local.email=req.body.email;
+                doc.local.UName=req.body.name;
+                doc.local.ULastName=req.body.lastname;
+                doc.local.UPhone=req.body.phone;
+                doc.save();
+            })
+            res.redirect('/Usuarios');
+        }
+        
+        if(req.body.tipo=="updatePassword"){
+            console.log("pass"); 
+            var id = req.body.idt;     
+            UsersData.findById(id, function(err, doc) {
+                if(req.body.password1==req.body.password2){
+                    doc.local.password=doc.generateHash(req.body.password1);
+                    doc.save();
+                    res.redirect('/Usuarios');
+                }
+                else{  
+                    res.render('EditUser',{
+                        title:"",
+                        items:doc,
+                        user:req.user,
+                        message:"Las contraseñas no coinciden",
+                    });
+                }
+            })                             
+        }
+
+        if(req.body.tipo=="Delete"){
+            console.log("del");
+            var id = req.body.idt;
+            UsersData.findByIdAndRemove(id).exec();
+            res.redirect('/Usuarios');
+        }   
     });
 
     app.get('/logout',(req,res)=>{

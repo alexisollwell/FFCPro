@@ -8,16 +8,39 @@
 </head>
 <body>
     <form action="/EditUser" method="POST">
-
-            <input type="text" value="<%= items.local.UName %>" id="name">
-            <input type="text" value="<%= items.local.ULastName %>" id="lastname">
-            <input type="number" value="<%= items.local.UPhone %>" id="phone">
-            <input type="email" value="<%= items.local.email %>" id="email">
-            <h1>nueva contraseña</h1>
-            <input type="text" id="contraseña">
+            <h4>Modificar datos</h4>
+            <input type="text" value="<%= items.local.UName %>" id="name" name="name" required="">
+            <input type="text" value="<%= items.local.ULastName %>" id="lastname" name="lastname" required="">
+            <input type="number" value="<%= items.local.UPhone %>" id="phone" name="phone" required="">
+            <input type="email" value="<%= items.local.email %>" id="email" name="email" required="">
+            <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
+            <input type="hidden" value="updateData" id="tipo" name="tipo">
         <button type="submit">
             Actualizar
         </button>
-    </form>  
+    </form>
+    <br>
+    <form action="/EditUser" method="POST">
+        <h4>Modificar contraseña</h4>
+        <% include ./partials/msg %>
+        <p>Ingrese nueva contraseña</p>
+        <input type="text" id="password1" name="password1" required="">
+        <p>Confirme contraseña</p>
+        <input type="text" id="password2" name="password2" required="">
+        <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
+        <input type="hidden" value="updatePassword" id="tipo" name="tipo">
+        <button type="submit">
+            Cambiar
+        </button>
+    </form>
+    <br>
+    <form action="/EditUser" method="POST">
+        <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
+        <input type="hidden" value="Delete" id="tipo" name="tipo">
+        <button type="submit">
+            Eliminar
+        </button>
+    </form> 
+    <% include ./partials/Initialization %>
 </body>
 </html>
