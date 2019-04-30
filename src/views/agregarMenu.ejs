@@ -1,115 +1,69 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Agregar producto</title>
-    <style>
-    body{
-      margin: 0;
-      padding: 0;
-      /* background: url("https://www.wallpaperup.com/uploads/wallpapers/2018/03/23/1239149/1b1dca24781f4d058119fe6feea69b46-1000.jpg"); */
-      font-family: sans-serif;
-    }
+<html lang="en">
+<% include ./partials/head %>
+<body>
+    <% include ./partials/nav %>
+    <div class="row">
+        <br>
+        <div class="col s12 m6">
+            <h4 class="Rheader center-align">Agregar producto</h4>
+            <div class="container">
+                <div class="divider"></div>
+                <div class="Rheader center-align">
+                    <% include ./partials/msg %>
+                </div>
+        <form class="Aform" method="POST">
+            <div class="input-field col s12 m6">
+                <input type="text" name="nombre" id="nombre" required=""> 
+                <label for="nombre ">Nombre</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <input type="text" name="descripcion" id="descripcion" required="">
+                <label for="descripcion">Descripción del producto</label>
+            </div>
+            <div class="input-field col s6 ">
+                <input type="number" id="precio" name="precio" required="">
+                <label for="precio">Precio</label>
+            </div>
+            <div class="input-field col s6">
+                <input type="number" id="time" max="60" min="0" name="time" required="">
+                <label for="time">Tiempo de preparación</label>
+            </div>
+            <div class="file-field input-field col s12">
+              <div class="btn red darken-4">
+                <span>File</span>
+                <input type="file" name="foto">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+              </div>
+            </div>         
+          <button class="btn col s12 red darked-3" style="margin-bottom: 10px;" type="submit">
+            Registrar
+          </button>
+        </form>
+            </div>
+        </div>
 
-    .backL{
-      width: 504px;
-      height: 424px;
-      background: rgb(0, 0, 0);
-      top: 40%;
-      left: 50%;
-      border-radius: 10%;
-      position: absolute;
-      transform: translate(-50%,-50%);
-      box-sizing: border-box;
-    }
-    .LoginBox{
-      width: 500px;
-      height: 420px;
-      background: #EABA5B;
-      border-radius: 10%;
-      color: #fff;
-      top: 40%;
-      left: 50%;
-      position: absolute;
-      transform: translate(-50%,-50%);
-      box-sizing: border-box;
-      padding: 20px 30px;
-    }
-    .lig{
-      margin: 0;
-      padding: 0 0 20px;;
-      text-align: center;
-      color:rgb(227, 228, 252);
-    }
-
-    .LoginBox p{
-      margin: 0;
-      padding: 0;
-      font-weight: bold;
-    }
-    .LoginBox input{
-      width: 85%;
-      margin-bottom: 20px;
-      padding: 0 10px;
-      border: none;
-      /* border-bottom: 1px solid #fff; */
-      /* //background: transparent; */
-      outline: none;
-      height: 40px;
-      font-size: 16px;
-      border-radius: 10px;
-    }
-    button{
-      border: none;
-      outline: none;
-      height: 40px;
-      background: #fb2525;
-      color: #fff;
-      font-size: 18px;
-      width: 100%;
-      border-radius: 20px;
-      margin: 10px 0;
-    }
-    </style>
-  </head>
-  <body>
-    <div class="backL"></div>
-    <div class="LoginBox">
-      <h1 class="lig">Register <%= user.local.UName %></h1>
-
-      <form class="Aform" method="POST" >
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <p>Nombre</p>
-                <input type="text" name="nombre" placeholder="Agregar nombre">
-              </td>
-              <td>              
-                <p>Descripcion</p>
-                <input type="text" name="descripcion" placeholder="Agregar descripcion">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>Precio</p>
-                <input type="number" id="Names" name="precio" placeholder="precio">
-              </td>
-              <td>             
-                  <p>Tiempo preparacion</p>
-                  <input type="number" id="time" max="50" min="0" name="time" placeholder="Agregar tiempo">
-              </td>
-              <td>
-                <p>Foto</p>
-                <input type="file" id="foto" name="foto" />
-              </td>
-            </tr>          
-          </tbody>
-        </table>        
-        <button type="submit">
-          Agregar
-        </button>
-      </form>
-    </div>
-  </body>
+        <div class="col s12 m6" >
+            <h4 class="Rheader">Lista de productos</h4>
+            <div class="divider"></div>
+            <div class="overflowContent" style="overflow: auto;" >
+                <ul class="collection">
+                    <% items.forEach(function(prd) { %>
+                        <li class="collection-item avatar" >
+                            <img src="/images/user.png" alt="" class="circle">
+                            <p><%= prd.local.Mtitulo %></p>
+                            <p><%= prd.local.Mdescripcion %><br>
+                                <%= prd.local.Mprecio %>
+                            </p>
+                            <a class="secondary-content " href="/EditMenu/?id=<%= prd._id %>"><i class="material-icons">create</i></a>
+                        </li>                  
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+    </div>   
+<% include ./partials/Initialization %>
+</body>
 </html>

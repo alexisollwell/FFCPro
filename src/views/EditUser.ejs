@@ -1,46 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
+<% include ./partials/head %>
 <body>
-    <form action="/EditUser" method="POST">
-            <h4>Modificar datos</h4>
-            <input type="text" value="<%= items.local.UName %>" id="name" name="name" required="">
-            <input type="text" value="<%= items.local.ULastName %>" id="lastname" name="lastname" required="">
-            <input type="number" value="<%= items.local.UPhone %>" id="phone" name="phone" required="">
-            <input type="email" value="<%= items.local.email %>" id="email" name="email" required="">
+    <% include ./partials/nav %>
+    <div class="row container">
+        <form action="/EditUser" method="POST">
+            <div class="col s12 m4">
+            <h4 class="Rheader">Modificar datos</h4>
+            <div class="divider"></div>
+            <div class="input-field">
+                <input type="text" value="<%= items.local.UName %>" id="name" name="name" required="">
+                <label for="name">Nombre</label>
+            </div>
+            <div class="input-field">
+                <input type="text" value="<%= items.local.ULastName %>" id="lastname" name="lastname" required="">
+                <label for="lastname">Apellidos</label>
+            </div>
+            <div class="input-field">
+                <input type="number" value="<%= items.local.UPhone %>" id="phone" name="phone" required="">
+                <label for="phone">Teléfono</label>
+            </div>
+            <div class="input-field">
+                <input type="email" value="<%= items.local.email %>" id="email" name="email" required="">
+                <label for="email">Correo</label>
+            </div>
+            <div>
+                <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
+                <input type="hidden" value="updateData" id="tipo" name="tipo">
+            </div>
+            <button type="submit" class="btn col s12 green darked-3 offset-m2 m8">
+                Actualizar
+            </button>
+        </div>
+        </form>
+    <!-- </div>
+    <div class="row"> -->
+        <form action="/EditUser" method="POST" class="col s12 m4 offset-m1">
+            <h4 class="Rheader">Modificar contraseña</h4>
+            <% include ./partials/msg %>
+            <div class="input-field">
+                <input type="text" id="password1" name="password1" required="">
+                <label for="password1">Ingrese nueva contraseña</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="password2" name="password2" required="">
+                <label for="password2">Confirme contraseña</label>
+            </div>
             <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
-            <input type="hidden" value="updateData" id="tipo" name="tipo">
-        <button type="submit">
-            Actualizar
-        </button>
-    </form>
-    <br>
-    <form action="/EditUser" method="POST">
-        <h4>Modificar contraseña</h4>
-        <% include ./partials/msg %>
-        <p>Ingrese nueva contraseña</p>
-        <input type="text" id="password1" name="password1" required="">
-        <p>Confirme contraseña</p>
-        <input type="text" id="password2" name="password2" required="">
-        <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
-        <input type="hidden" value="updatePassword" id="tipo" name="tipo">
-        <button type="submit">
-            Cambiar
-        </button>
-    </form>
-    <br>
-    <form action="/EditUser" method="POST">
-        <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
-        <input type="hidden" value="Delete" id="tipo" name="tipo">
-        <button type="submit">
-            Eliminar
-        </button>
-    </form> 
+            <input type="hidden" value="updatePassword" id="tipo" name="tipo">
+            <button type="submit" class="btn green darked-3 col s12 offset-m2 m8">
+                Cambiar
+            </button>
+        </form>
+    <!-- </div>
+    <div class="row"> -->
+        <form action="/EditUser" method="POST" class="row">
+            <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
+            <input type="hidden" value="Delete" id="tipo" name="tipo">
+            <button type="submit" class="btn red darked-3 col offset-m1 s12 m2"><i class="material-icons right">clear</i>Eliminar</button>
+        </form>
+    </div>
     <% include ./partials/Initialization %>
 </body>
 </html>

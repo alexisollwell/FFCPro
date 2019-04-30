@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
-</head>
+<% include ./partials/head %>
 <body>
+    <% include ./partials/nav %>
     <h1>Name:</h1>
     <h2><%= user.local.UName %></h2>
     <h2><%= user.local.ULastName %></h2>
@@ -20,5 +18,6 @@
     <form action="/logout" method="GET">
         <button type="submit">LogOut</button>
     </form>
+    <% include ./partials/Initialization %>
 </body>
 </html>
