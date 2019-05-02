@@ -24,7 +24,7 @@ module.exports= (app,passport)=>{
 
     app.get('/register',(req,res)=>{
         res.render('registrar',{
-            title: "Registrar",
+            
             message: req.flash('signupMessage')
         });
     });

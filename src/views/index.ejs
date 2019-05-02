@@ -8,89 +8,36 @@
       background: url("https://www.wallpaperup.com/uploads/wallpapers/2018/03/23/1239149/1b1dca24781f4d058119fe6feea69b46-1000.jpg");
       font-family: sans-serif;
     }
-
-    .backL{
-      width: 324px;
-      height: 424px;
-      background: rgb(0, 0, 0);
-      top: 50%;
-      left: 50%;
-      border-radius: 10%;
-      position: absolute;
-      transform: translate(-50%,-50%);
-      box-sizing: border-box;
-    }
-    .LoginBox{
-      width: 320px;
-      height: 420px;
-      background: #EABA5B;
-      border-radius: 10%;
-      color: #fff;
-      top: 50%;
-      left: 50%;
-      position: absolute;
-      transform: translate(-50%,-50%);
-      box-sizing: border-box;
-      padding: 70px 30px;
-    }
-    .avatar{
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      position: fixed;
-      background-color: darkorange;
-      top: -70px;
-      left: calc(30%)
-    }
-    .lig{
-      margin: 0;
-      padding: 0 0 20px;
-      text-align: center;
-      color:rgb(227, 228, 252);
-    }
-
-    .LoginBox p{
-      margin: 0;
-      padding: 0;
-      font-weight: bold;
-    }
-    .LoginBox input{
-      width: 90%;
-      margin-bottom: 20px;
-      padding: 0 10px;
-      border: none;
-      /* border-bottom: 1px solid #fff;
-      background: transparent; */
-      outline: none;
-      height: 40px;
-      font-size: 16px;
-      border-radius: 10px;
-    }
-    button{
-      border: none;
-      outline: none;
-      height: 40px;
-      background: #fb2525;
-      color: #fff;
-      font-size: 18px;
-      width: 100%;
-      border-radius: 20px;
-      margin: 20px 0;
+    .Bcurvos
+    {
+      border-radius: 5%;
     }
     </style>
   <body>
     <% include ./partials/nav %>
-    <div class="row">
+    <br><br>
+    <div class="row" >
+      <div class="col s12 m4 offset-m4 white z-depth-4 Bcurvos">
+          <h4 class="Rheader center">Iniciar seción</h4>
+          <div class="divider"></div>
+          <br><br>
       <form class="Aform" action="/" method="POST">
-        <p>Email</p>
-        <input type="email" name="email" placeholder="Enter Email" autocomplete="off">
-        <p>Password</p>
-        <input type="password" name="password" placeholder="Enter Password">
-        <button type="submit">
+        <div class="input-field">
+          <input type="email" name="email" id="email" autocomplete="off">
+          <label for="email"> Email </label>
+        </div>
+        <div class="input-field">
+          <input type="password" name="password" id="password" >
+          <label for="password">Password</label>
+        </div>
+        <br>
+        <button type="submit" class="btn col s12 m8 offset-m2 red darken-2">
           SignIn
         </button>
+        <br><br>
       </form>
     </div>
+  </div>
     <% include ./partials/Initialization %>
 </body>
 </html>
