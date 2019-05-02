@@ -67,6 +67,10 @@ module.exports= (app,passport)=>{
         });
     });
 
+    app.post('/menu',(req,res)=>{
+        console.log(req);
+    });
+
     app.get('/EditUser', islogged ,(req,res)=>{
         var id = req.query.id;
         UsersData.findById(id, function(err, doc) {
@@ -209,21 +213,24 @@ module.exports= (app,passport)=>{
 function islogged(req,res,next){
     if(req.isAuthenticated()){
         var userJob = req.user.local.Ujob;
-        console.log(userJob);
-        if(req.route.path=='/profile'){
+        if(userJob==1){
             return next();
         }else{
-            if(userJob==2){
-                res.render('menu',{
-                    title:"Menu",
-                    user:req.user
-                });
-            }
-            if(userJob==3){
-                res.render('Cocinero',{
-                    title:"Cocinero",
-                    user:req.user
-                });
+            if(req.route.path=='/profile'){
+                return next();
+            }else{
+                if(userJob==2){
+                    res.render('menu',{
+                        title:"Menu",
+                        user:req.user
+                    });
+                }
+                if(userJob==3){
+                    res.render('Cocinero',{
+                        title:"Cocinero",
+                        user:req.user
+                    });
+                }
             }
         }
     }else{
