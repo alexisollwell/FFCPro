@@ -1,23 +1,23 @@
 <nav>
     <% if(typeof user !== "undefined") {%>
-        <div class="nav-wrapper red darken-2 z-depth-2">
-            <% if(user.local.Ujob == 1) {%>
-        <img class="logoimg" height="50" width="50" style="margin-top: 8px;" src="/images/roast-chicken.png" alt="">
-        <a href="#!" class="brand-logo">Fausto´s Fried Chicken</a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
+            <div class="nav-wrapper red darken-2 z-depth-2">
+                <img class="logoimg" height="50" width="50" style="margin-top: 8px;" src="/images/roast-chicken.png" alt="">
+                <a href="#!" class="brand-logo">Fausto´s Fried Chicken</a>
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                <% if(user.local.Ujob == 1) {%>
                     <li><a href="/usuarios"><i class="material-icons left">assignment_ind</i>Empleados</a></li>
                     <li><a href="/menu/agregar"><i class="material-icons left">local_dining</i>Productos</a></li>
                     <li><a href="#"><i class="material-icons left">insert_chart</i>Reportes</a></li>
-                    <% } %>
+                <% } %>
                     <li><a href="/profile"><i class="material-icons left">face</i>Perfi</a></li>
                     <li><a href="/logout">Salir<i class="material-icons left">exit_to_app</i></a></li>
                 </ul>
             </div>
         <%} else {%>
-            <div class="nav-wrapper red darken-2 z-depth-2 center">
+            <div class="nav-wrapper red darken-2 z-depth-2">
                 <img class="logoimg" height="50" width="50" style="margin-top: 8px;" src="/images/roast-chicken.png" alt="">
-                <a href="#!" class="brand-logo">Fausto´s Fried Chicken</a>
+                <a href="#!" class="brand-logo center">Fausto´s Fried Chicken</a>
             </div>
         <% } %>
     </nav>

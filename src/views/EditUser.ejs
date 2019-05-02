@@ -26,10 +26,24 @@
             </div>
             <div class="input-field">
                 <select name="Jobs">
-                    <option value="0" disabled selected>Seleccione una opción</option>
-                    <option value="1">Administrador</option>
-                    <option value="2">Cajero</option>
-                    <option value="3">Cocinero</option>
+                    <% if(items.local.Ujob == "1"){ %>
+                        <option value="1" selected >Administrador</option>
+                        <option value="2">Cajero</option>
+                        <option value="3" >Cocinero</option>
+                    <% } else if(items.local.Ujob == "2") {%>
+                        <option value="1">Administrador</option>
+                        <option value="2" selected>Cajero</option>
+                        <option value="3" >Cocinero</option>
+                    <% } else if(items.local.Ujob == "3"){%>
+                        <option value="1" >Administrador</option>
+                        <option value="2" >Cajero</option>
+                        <option value="3" selected>Cocinero</option>
+                    <% } else{ %>
+                        <option value="0" selected disabled>Seleccione una opción</option>
+                        <option value="1" >Administrador</option>
+                        <option value="2">Cajero</option>
+                        <option value="3" >Cocinero</option>
+                    <% } %>
                 </select>
                 <label>Puesto</label>
             </div>
