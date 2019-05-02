@@ -4,6 +4,7 @@ const UsersData = require("../app/models/user");
 module.exports= (app,passport)=>{
     app.get('/',(req,res)=>{
         res.render('index',{
+            title: "Iniciar seción",
             message: req.flash('loginMessage')
         });
     });

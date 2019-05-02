@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>FFC Login</title>
-    <style>
+<html lang="en">
+  <% include ./partials/head %>
+   <style>
     body{
       margin: 0;
       padding: 0;
@@ -80,17 +78,9 @@
       margin: 20px 0;
     }
     </style>
-  </head>
   <body>
-    <div class="backL"></div>
-    <div class="LoginBox">
-      <img src="https://image.flaticon.com/icons/svg/145/145843.svg" class="avatar">
-      <h1 class="lig">Login</h1>
-      <% if(message.length>0) {%>
-        <div class="alert">
-          <%=message%>
-        </div>
-      <%}%>
+    <% include ./partials/nav %>
+    <div class="row">
       <form class="Aform" action="/" method="POST">
         <p>Email</p>
         <input type="email" name="email" placeholder="Enter Email" autocomplete="off">
@@ -101,5 +91,6 @@
         </button>
       </form>
     </div>
-  </body>
+    <% include ./partials/Initialization %>
+</body>
 </html>
