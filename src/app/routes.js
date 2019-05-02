@@ -16,7 +16,7 @@ module.exports= (app,passport)=>{
 
     app.get('/register',(req,res)=>{
         res.render('registrar',{
-            title: "",
+            title: "Registrar",
             message: req.flash('signupMessage')
         });
     });
@@ -29,7 +29,7 @@ module.exports= (app,passport)=>{
 
     app.get('/profile', islogged ,(req,res)=>{
         res.render('profile',{
-            title: "",
+            title: "Perfil",
             user:req.user
         });
     });
@@ -38,7 +38,7 @@ module.exports= (app,passport)=>{
         UsersData.find()
         .then(function(doc) {
             res.render('UsuariosManager', {
-                title: "",
+                title: "Usuarios",
                 items: doc,
                 user:req.user,
                 message: req.flash('signupMessage')
@@ -54,7 +54,7 @@ module.exports= (app,passport)=>{
 
     app.get('/menu', islogged ,(req,res)=>{
         res.render('menu',{
-            title:"",
+            title:"Menu",
             user:req.user
         });
     });
@@ -66,7 +66,7 @@ module.exports= (app,passport)=>{
             console.error('error, no entry found');
             }
             res.render('EditUser',{
-                title:"",
+                title:"Editar usuario",
                 items:doc,
                 user:req.user,
                 message:"",
@@ -102,7 +102,7 @@ module.exports= (app,passport)=>{
                 }
                 else{  
                     res.render('EditUser',{
-                        title:"",
+                        title:"Editar usuario",
                         items:doc,
                         user:req.user,
                         message:"Las contraseñas no coinciden",
@@ -150,7 +150,7 @@ module.exports= (app,passport)=>{
          });
        
         if(correcto){
-            res.redirect('/menu')
+            res.redirect('/menu/agregar')
         }else{
             res.render('/menu/agregar',req.flash("loginMessage","No se pudo guardar el alimento, intente nuevamente."));
         }
