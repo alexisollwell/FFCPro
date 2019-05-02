@@ -155,6 +155,46 @@ module.exports= (app,passport)=>{
             res.render('/menu/agregar',req.flash("loginMessage","No se pudo guardar el alimento, intente nuevamente."));
         }
     });
+    
+    app.get('/EditMenu', islogged ,(req,res)=>{
+        var id = req.query.id;
+        Menu.findById(id, function(err, doc) {
+            if (err) {
+            console.error('error, no entry found');
+            }
+            res.render('EditProduct',{
+                title:"",
+                items:doc,
+                user:req.user,
+                message:"",
+            });
+        })      
+    });
+
+    app.post('/EditMenu', islogged ,(req,res)=>{
+        if(req.body.tipo=="updateData"){
+            console.log("up");
+            var id = req.body.idt;
+            Menu.findById(id, function(err, doc) {
+                if (err) {
+                console.error('error, no entry found');
+                }
+                doc.local.Mtitulo=req.body.Mtitulo;
+                doc.local.Mdescripcion=req.body.Mdescripcion;
+                doc.local.Mprecio=req.body.Mprecio;
+                doc.local.Mtiempo=req.body.Mtiempo;
+                doc.save();
+            })
+            res.redirect('/menu/agregar');
+        }
+
+        if(req.body.tipo=="Delete"){
+            console.log("del");
+            var id = req.body.idt;
+            Menu.findByIdAndRemove(id).exec();
+            res.redirect('/menu/agregar');
+        }   
+    });
 };
 
 function islogged(req,res,next){

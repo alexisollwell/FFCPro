@@ -6,7 +6,7 @@ const menuSchema = new mongoose.Schema({
         Mdescripcion : {type: String,require: true},
         Mprecio: {type: Number,require: true},
         Mtiempo: {type: Number,require: true},
-        Mfoto : {type: String,require: true}
+        Mfoto : String
     }
 });
 

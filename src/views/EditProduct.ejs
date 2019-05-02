@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ./partials/head %>
+<body>
+    <% include ./partials/nav %>
+    <div class="row container">
+        <form action="/EditMenu" method="POST">
+            <div class="col s12 m4">
+            <h4 class="Rheader">Modificar datos</h4>
+            <div class="divider"></div>
+            <div class="input-field">
+                <input type="text" value="<%= items.local.Mtitulo %>" id="Mtitulo" name="Mtitulo" required="">
+                <label for="Mtitulo">Titulo</label>
+            </div>
+            <div class="input-field">
+                <input type="text" value="<%= items.local.Mdescripcion %>" id="Mdescripcion" name="Mdescripcion" required="">
+                <label for="Mdescripcion">Descripción</label>
+            </div>
+            <div class="input-field">
+                <input type="number" value="<%= items.local.Mprecio %>" id="Mprecio" name="Mprecio" required="">
+                <label for="Mprecio">Precio</label>
+            </div>
+            <div class="input-field">
+                <input type="number" value="<%= items.local.Mtiempo %>" id="Mtiempo" name="Mtiempo" required="">
+                <label for="Mtiempo">Tiempo</label>
+            </div>
+            <div>
+                <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
+                <input type="hidden" value="updateData" id="tipo" name="tipo">
+            </div>
+            <button type="submit" class="btn col s12 green darked-3 offset-m2 m8">
+                Actualizar
+            </button>
+        </div>
+        </form>
+    <!-- </div>
+    <div class="row"> -->
+    <!-- </div>
+    <div class="row"> -->
+        <form action="/EditMenu" method="POST" class="row">
+            <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
+            <input type="hidden" value="Delete" id="tipo" name="tipo">
+            <button type="submit" class="btn red darked-3 col offset-m1 s12 m2"><i class="material-icons right">clear</i>Eliminar</button>
+        </form>
+    </div>
+    <% include ./partials/Initialization %>
+</body>
+</html>
