@@ -15,6 +15,13 @@ module.exports= (app,passport)=>{
         failureFlash:true
     }));
 
+    app.get('/Cocinero',(req,res)=>{
+        res.render('Cocinero',{
+            title: "Cocinero",
+            user:req.user
+        });
+    });
+
     app.get('/register',(req,res)=>{
         res.render('registrar',{
             title: "Registrar",
@@ -87,6 +94,7 @@ module.exports= (app,passport)=>{
                 doc.local.UName=req.body.name;
                 doc.local.ULastName=req.body.lastname;
                 doc.local.UPhone=req.body.phone;
+                doc.local.Ujob=req.body.Jobs;
                 doc.save();
             })
             res.redirect('/Usuarios');
@@ -200,6 +208,20 @@ module.exports= (app,passport)=>{
 
 function islogged(req,res,next){
     if(req.isAuthenticated()){
+        var userJob = req.user.local.Ujob;
+        console.log(userJob);
+        if(userJob==2){
+            res.render('menu',{
+                title:"Menu",
+                user:req.user
+            });
+        }
+        if(userJob==3){
+            res.render('Cocinero',{
+                title:"Cocinero",
+                user:req.user
+            });
+        }
         return next();
     }else{
         return res.redirect('/');
