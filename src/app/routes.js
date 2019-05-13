@@ -68,7 +68,7 @@ module.exports= (app,passport)=>{
     });
 
     app.post('/menu',(req,res)=>{
-        console.log(req);
+        console.log(req.body);
     });
 
     app.get('/EditUser', islogged ,(req,res)=>{

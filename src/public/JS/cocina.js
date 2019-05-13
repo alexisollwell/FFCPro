@@ -5,12 +5,26 @@ function agregarArticulo(elm){
         var cant = document.getElementsByClassName(elm.Nombre + 'Cant')[0].textContent.trim()
         cant = parseInt(cant) + 1;
         document.getElementsByClassName(elm.Nombre + 'Cant')[0].textContent = cant;
+
+        var nombre = elm.Nombre.trim();
+        var datos = document.getElementById(nombre);
+        var datosFood =datos.value.split("&");
+        var CantidadDato= datosFood[2];
+        var cantidad = CantidadDato.split(":");
+        var nuevaCantidad = parseInt(cantidad[1])+1;
+        document.getElementsByClassName(nombre)[0].value='nombre:'+elm.Nombre+'&precio:'+elm.Precio+'&cantidad:'+nuevaCantidad;
     }else{
         var inner = '<div class="col s7"><label style="color:black;">'+ elm.Nombre + '</label></div><div class="col s1 redHover" onclick="quitarProducto(this,'+elm.Precio+')"><label class="'+ elm.Nombre+'Cant" style="color:black;">1</label></div><div class="col s3"><label style="color:black;" name="'+elm.Nombre+'">$ '+ elm.Precio + '</label></div>';
         var elmD = document.createElement('div');
         elmD.classList = 'col s12'
         elmD.innerHTML = inner;
         document.getElementById('prodOrd').append(elmD);
+
+        var nombre = elm.Nombre.trim();
+        var inn2 = '<input type="hidden" value="nombre:'+ elm.Nombre+"&precio:"+elm.Precio+'&cantidad:1" id="'+nombre+'" name="'+nombre+'" class="'+nombre+'">';
+        var el2 = document.createElement('input');
+        el2.innerHTML = inn2;
+        document.getElementById('MenuForm').append(el2);
     }
     getTotal(elm.Precio);
 }
@@ -24,6 +38,7 @@ function getTotal(sum){
 function reiniciarCuenta(){
     document.getElementById('h_total').textContent = 'Total: $0';
     document.getElementById('prodOrd').innerHTML = '';
+    document.getElementById('MenuForm').innerHTML = '';
 }
 
 function quitarProducto(elm, precio){
