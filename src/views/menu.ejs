@@ -3,6 +3,7 @@
 <% include ./partials/head %>
 <body>
     <% include ./partials/nav %>
+    <br>
     <div class="container z-depth-1 grey">
         <div class="row">
             <div class="col s12 m4">
@@ -21,7 +22,6 @@
                     <div class="col s12">
                         <form action="/menu" method="POST">
                             <div id="MenuForm" class="MenuForm" style="display: none;">
-
                             </div>
                             <button type="submit" class="green col s6 btn">Guardar</button>
                         </form>
@@ -29,80 +29,23 @@
                     </div>
             </div>
             <div class="col s12 m8 white rounded" >
+                    <% items.forEach(function(prd) { %>
                 <div class="col s6">
-                    <div class="card-panel grey lighten-5 z-depth-1 padLess waves-effect col s12" onclick="agregarArticulo({'Nombre': 'Pierna', 'Precio': 20})">
+                    <div class="card-panel grey lighten-5 z-depth-1 padLess waves-effect col s12" onclick="agregarArticulo({'Nombre': '<%= prd.local.Mtitulo %>', 'Precio': <%= prd.local.Mprecio %>})">
                         <div class="valign-wrapper">
                             <div class="col s4">
                                 <img src="/images/chicken-leg.png" alt="" class=" responsive-img" width="50" height="50"> <!-- notice the "circle" class -->
                             </div>
                             <div class="col s8">
                                 <span class="black-text">
-                                 Pierna de pollo 
-                                $ 20</span>
+                                        <%= prd.local.Mtitulo %><br>
+                                        <%= prd.local.Mdescripcion %> <br>
+                                        $ <%= prd.local.Mprecio %></span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col s6">
-                    <div class="card-panel grey lighten-5 z-depth-1 padLess waves-effect col s12" onclick="agregarArticulo({'Nombre': 'Sandwich', 'Precio': 30})">
-                        <div class="valign-wrapper">
-                            <div class="col s4">
-                                <img src="/images/sandwich.png" alt="" class=" responsive-img" width="50" height="50"> <!-- notice the "circle" class -->
-                            </div>
-                            <div class="col s8">
-                                <span class="black-text">
-                                    sandwich de pollo 
-                                     $ 30
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s6">
-                    <div class="card-panel grey lighten-5 z-depth-1 padLess waves-effect col s12" onclick="agregarArticulo({'Nombre': 'Pollo entero', 'Precio': 15})">
-                        <div class="valign-wrapper">
-                            <div class="col s4">
-                                <img src="/images/chicken.png" alt="" class=" responsive-img" width="50" height="50"> <!-- notice the "circle" class -->
-                            </div>
-                            <div class="col s8">
-                                <span class="black-text">
-                                    Pollo entero
-                                     $ 15
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s6">
-                    <div class="card-panel grey lighten-5 z-depth-1 padLess waves-effect col s12" onclick="agregarArticulo({'Nombre': 'Hamburguesa', 'Precio': 55})">
-                            <div class="valign-wrapper">
-                                <div class="col s4">
-                                    <img src="/images/fast-food.png" alt="" class=" responsive-img" width="50" height="50"> <!-- notice the "circle" class -->
-                                </div>
-                            <div class="col s8">
-                                <span class="black-text">
-                                        Hamburguesa de pollo 
-                                         $ 55
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s6">
-                        <div class="card-panel grey lighten-5 z-depth-1 padLess waves-effect col s12" onclick="agregarArticulo({'Nombre': 'Bebida', 'Precio': 20})">
-                                <div class="valign-wrapper">
-                                    <div class="col s4">
-                                        <img src="/images/beer-can.png" alt="" class=" responsive-img" width="50" height="50"> <!-- notice the "circle" class -->
-                                    </div>
-                                <div class="col s8">
-                                    <span class="black-text">
-                                            bebida
-                                             $ 20
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <% }); %>
             </div>
             
         </div>

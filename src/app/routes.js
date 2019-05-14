@@ -61,14 +61,26 @@ module.exports= (app,passport)=>{
     }));
 
     app.get('/menu', islogged ,(req,res)=>{
-        res.render('menu',{
-            title:"Menu",
-            user:req.user
+        Menu.find()
+        .then(function(mn) {
+            console.log(mn);
+            res.render('menu', {
+                title: "Menu",
+                items: mn,
+                user:req.user,
+                message: req.flash('signupMessage')
+            });
         });
+        
+      
     });
 
     app.post('/menu',(req,res)=>{
-        console.log(req.body);
+        req.body.Productos.forEach( elm => {
+            elm = elm.replace(/\'/g,'"')
+            console.log(elm);
+        });
+        console.log(req.body.Productos);
     });
 
     app.get('/EditUser', islogged ,(req,res)=>{
