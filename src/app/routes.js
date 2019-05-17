@@ -63,7 +63,6 @@ module.exports= (app,passport)=>{
     app.get('/menu', islogged ,(req,res)=>{
         Menu.find()
         .then(function(mn) {
-            console.log(mn);
             res.render('menu', {
                 title: "Menu",
                 items: mn,
@@ -75,12 +74,14 @@ module.exports= (app,passport)=>{
       
     });
 
-    app.post('/menu',(req,res)=>{
+    app.post('/menu',islogged, (req,res) =>{
+        console.log(req.body.comentario);
         req.body.Productos.forEach( elm => {
-            elm = elm.replace(/\'/g,'"')
-            console.log(elm);
+            elm = elm.replace(/\'/g,'"');
+            var elmJS = JSON.parse(elm.toString());
+            console.log(elmJS);
         });
-        console.log(req.body.Productos);
+        
     });
 
     app.get('/EditUser', islogged ,(req,res)=>{
