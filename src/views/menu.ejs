@@ -43,7 +43,7 @@
                     <div class="card-panel grey lighten-5 z-depth-1 padLess waves-effect col s12" onclick="agregarArticulo({'ID': '<%= prd.id %>','Nombre': '<%= prd.local.Mtitulo %>', 'Precio': <%= prd.local.Mprecio %>})">
                         <div class="valign-wrapper">
                             <div class="col s4">
-                                <img src="/images/chicken-leg.png" alt="" class=" responsive-img" width="50" height="50"> <!-- notice the "circle" class -->
+                                <img src="/uploads/<%= prd.local.Mfoto %>" alt="" class=" responsive-img" width="50" height="50"> <!-- notice the "circle" class -->
                             </div>
                             <div class="col s8">
                                 <span class="black-text">
