@@ -1,5 +1,7 @@
 const Menu = require("../app/models/menu");
 const UsersData = require("../app/models/user");
+const Order = require("../app/models/ticket");
+const orderItem = require("../app/models/ticketDetalle");
 const { randomNumber } = require('../helpers/libs');
 
 const fs = require('fs-extra');
@@ -80,12 +82,27 @@ module.exports= (app,passport)=>{
 
     app.post('/menu',islogged, (req,res) =>{
         console.log(req.body.comentario);
+        const idOrder = randomNumber();
+        const total = 0;
         req.body.Productos.forEach( elm => {
             elm = elm.replace(/\'/g,'"');
             var elmJS = JSON.parse(elm.toString());
+            //add each product to order
+            const OrderItem = new orderItem();
+            OrderItem.local.TDticket = idOrder;
+            OrderItem.local.TDproducto = elmJS.nombre;
+            OrderItem.local.TDcantidad= elmJS.cantidad;
+            OrderItem.local.TDprecio = elmJS.precio;
+            OrderItem.save();
+            total = total + (elmJS.cantidad*elmJS.precio);
             console.log(elmJS);
         });
-        
+        const NewOrder = new Order();
+        NewOrder.local.Tticket = idOrder;
+        NewOrder.local.Ttotal=total;
+        NewOrder.local.Tcajero=req.user.UName+" "+req.user.ULastName;
+        NewOrder.local.Tcomentaro=req.body.comentario;
+        NewOrder.save();
     });
 
     app.get('/EditUser', islogged ,(req,res)=>{

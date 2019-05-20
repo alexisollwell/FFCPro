@@ -6,7 +6,7 @@ const ticket = new mongoose.Schema({
         Ttotal : {type: Float32Array,require: true},
         Tcajero: {type: String,require: true},
         Tfecha: {type: Date, require: true},
-        Testado: {type: String, require:true},
+        Testado: {type: String},
         Tcomentaro: {type: String, require: true},
         Tllevar: {type: Boolean}
     }

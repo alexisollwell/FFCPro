@@ -5,7 +5,7 @@ const ticketDetalleSchema = new mongoose.Schema({
         TDticket : {type: Number,require: true},
         TDproducto : {type: String,require: true},
         TDcantidad: {type: Number,require: true},
-        TDprecio: {type: Float32Array, require: true}
+        TDprecio: {type: Float64Array, require: true}
     }
 });
 
