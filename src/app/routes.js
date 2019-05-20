@@ -261,8 +261,6 @@ module.exports= (app,passport)=>{
                         const deletePath = path.resolve(`src/public/uploads/${prod.local.Mfoto}`);                        
                         var detele = await fs.remove(deletePath);
                     }
-                   
-
                     await Menu.findById(id, function(err, doc) {
                             if (err) {
                                 correcto = false;
