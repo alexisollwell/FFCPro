@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const flash = require("connect-flash");
 const morgan = require("morgan");
+const multer = require("multer");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -27,8 +28,10 @@ app.set('view engine', 'ejs');
 
 //middelwears
 app.use(morgan('dev'));
+app.use(multer({dest: path.join(__dirname,'./public/uploads/temp')}).single('image'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
+app.use(express.json());
 app.use(session({
     secret:"alexis",
     resave:false,

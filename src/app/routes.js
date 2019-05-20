@@ -1,5 +1,9 @@
 const Menu = require("../app/models/menu");
 const UsersData = require("../app/models/user");
+const { randomNumber } = require('../helpers/libs');
+
+const fs = require('fs-extra');
+const path = require('path');
 
 module.exports= (app,passport)=>{
     app.get('/',(req,res)=>{
@@ -61,14 +65,27 @@ module.exports= (app,passport)=>{
     }));
 
     app.get('/menu', islogged ,(req,res)=>{
-        res.render('menu',{
-            title:"Menu",
-            user:req.user
+        Menu.find()
+        .then(function(mn) {
+            res.render('menu', {
+                title: "Menu",
+                items: mn,
+                user:req.user,
+                message: req.flash('signupMessage')
+            });
         });
+        
+      
     });
 
-    app.post('/menu',(req,res)=>{
-        console.log(req.body);
+    app.post('/menu',islogged, (req,res) =>{
+        console.log(req.body.comentario);
+        req.body.Productos.forEach( elm => {
+            elm = elm.replace(/\'/g,'"');
+            var elmJS = JSON.parse(elm.toString());
+            console.log(elmJS);
+        });
+        
     });
 
     app.get('/EditUser', islogged ,(req,res)=>{
@@ -149,34 +166,56 @@ module.exports= (app,passport)=>{
         });
     });
 
-    app.post('/menu/agregar', islogged, (req,res)=>{
-        var correcto = true;
-        const newMenu = new Menu();
-        newMenu.local.Mtitulo  = req.body.nombre;
-        newMenu.local.Mdescripcion = req.body.descripcion;
-        newMenu.local.Mprecio= req.body.precio;
-        newMenu.local.Mtiempo= req.body.time;
-        // newMenu.local.Mfoto = req.body.
-        
-         newMenu.save(function(err){
-             if(err){console.log(err); correcto = false;}
-         });
-       
-        if(correcto){
-            res.redirect('/menu/agregar')
-        }else{
-            res.render('/menu/agregar',req.flash("loginMessage","No se pudo guardar el alimento, intente nuevamente."));
+    app.post('/menu/agregar', islogged, async (req,res)=>{
+        const saveProduct = async () => {
+
+            var correcto = true;
+            const imgUrl = randomNumber();
+            const images = await Menu.find({ Mfoto: imgUrl });  
+            
+            if(images.length > 0){
+                saveProduct();
+            }else{
+                const ext = path.extname(req.file.originalname).toLowerCase();
+                const imageTempPath = req.file.path;
+                const targetPath = path.resolve(`src/public/uploads/${imgUrl}${ext}`);
+
+                if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+                    // you wil need the public/temp path or this will throw an error
+                    await fs.rename(imageTempPath, targetPath);
+
+                    const newMenu = new Menu();
+                    newMenu.local.Mtitulo  = req.body.nombre;
+                    newMenu.local.Mdescripcion = req.body.descripcion;
+                    newMenu.local.Mprecio= req.body.precio;
+                    newMenu.local.Mtiempo= req.body.time;
+                    newMenu.local.Mfoto = imgUrl + ext;
+                    
+                    correcto = await newMenu.save();
+
+                    if(correcto){
+                        res.redirect('/menu/agregar')
+                    }else{
+                        res.render('/menu/agregar',req.flash("loginMessage","No se pudo guardar el alimento, intente nuevamente."));
+                    }
+                } else {
+                    await fs.unlink(imageTempPath);
+                    res.render('/menu/agregar',req.flash("loginMessage","Solo se permiten imagenes."));
+                }
+            }
         }
+
+        saveProduct();
     });
     
-    app.get('/EditMenu', islogged ,(req,res)=>{
-        var id = req.query.id;
+    app.get('/EditMenu/:producto_id', islogged ,(req,res)=>{
+        var id = req.params.producto_id;
         Menu.findById(id, function(err, doc) {
             if (err) {
-            console.error('error, no entry found');
+                console.error('error, no entry found');
             }
             res.render('EditProduct',{
-                title:"",
+                title:"Editar producto",
                 items:doc,
                 user:req.user,
                 message:"",
@@ -184,30 +223,79 @@ module.exports= (app,passport)=>{
         })      
     });
 
-    app.post('/EditMenu', islogged ,(req,res)=>{
-        if(req.body.tipo=="updateData"){
-            console.log("up");
-            var id = req.body.idt;
-            Menu.findById(id, function(err, doc) {
-                if (err) {
-                console.error('error, no entry found');
+    app.post('/EditMenu/:producto_id', islogged ,(req,res)=>{
+        const id = req.params.producto_id;
+        Menu.findById(id, function(err, doc) {
+            if (err) {
+            console.error('error, no entry found');
+            }
+            doc.local.Mtitulo=req.body.Mtitulo;
+            doc.local.Mdescripcion=req.body.Mdescripcion;
+            doc.local.Mprecio=req.body.Mprecio;
+            doc.local.Mtiempo=req.body.Mtiempo;
+            doc.save();
+        })
+        
+
+
+        const changeImage = async () => {
+            var correcto = true;
+            const imgUrl = randomNumber();
+            const images = await Menu.find({ Mfoto: imgUrl });  
+            
+            if(images.length > 0){
+                changeImage();
+            }else{
+                const ext = path.extname(req.file.originalname).toLowerCase();
+                const imageTempPath = req.file.path;
+                const targetPath = path.resolve(`src/public/uploads/${imgUrl}${ext}`);
+
+                if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+                    // you wil need the public/temp path or this will throw an error
+                    await fs.rename(imageTempPath, targetPath);
+                    var prod = await Menu.findById(id);
+                    await fs.remove(imageTempPath);
+                    
+                    //Eliminar foto anterior
+                    if(prod.local.Mfoto != undefined){
+                        const deletePath = path.resolve(`src/public/uploads/${prod.local.Mfoto}`);                        
+                        var detele = await fs.remove(deletePath);
+                    }
+                   
+
+                    await Menu.findById(id, function(err, doc) {
+                            if (err) {
+                                correcto = false;
+                                console.error('error, no entry found');
+                            }else{
+                                doc.local.Mfoto = imgUrl + ext;
+                                doc.save();
+                            }
+                    }).then(() => {
+                        if(!correcto){
+                            res.render('/menu/agregar',req.flash("loginMessage","No se pudo actualizar la foto."));
+                        }
+                    }
+                    );
+                } else {
+                    await fs.unlink(imageTempPath);
+                    res.render('/menu/agregar',req.flash("loginMessage","Solo se permiten imagenes."));
                 }
-                doc.local.Mtitulo=req.body.Mtitulo;
-                doc.local.Mdescripcion=req.body.Mdescripcion;
-                doc.local.Mprecio=req.body.Mprecio;
-                doc.local.Mtiempo=req.body.Mtiempo;
-                doc.save();
-            })
-            res.redirect('/menu/agregar');
+            }
         }
 
-        if(req.body.tipo=="Delete"){
-            console.log("del");
-            var id = req.body.idt;
-            Menu.findByIdAndRemove(id).exec();
+        if(req.file != undefined){
+            changeImage().then(res.redirect('/menu/agregar'));
+        }else{   
             res.redirect('/menu/agregar');
-        }   
+        }
     });
+
+    app.post('/DeleteMenu/:producto_id', islogged, (req, res)=>{
+        const id = req.params.producto_id;
+        Menu.findByIdAndRemove(id).exec();
+        res.redirect('/menu/agregar');
+    })
 };
 
 function islogged(req,res,next){

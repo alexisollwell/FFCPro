@@ -4,10 +4,19 @@
 <body>
     <% include ./partials/nav %>
     <div class="row container">
-        <form action="/EditMenu" method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="col s12 m4">
             <h4 class="Rheader">Modificar datos</h4>
             <div class="divider"></div>
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                  <div class="card">
+                    <div class="card-image">
+                      <img src="/uploads/<%= items.local.Mfoto %>">
+                    </div>
+                  </div>
+                </div>
+              </div>
             <div class="input-field">
                 <input type="text" value="<%= items.local.Mtitulo %>" id="Mtitulo" name="Mtitulo" required="">
                 <label for="Mtitulo">Titulo</label>
@@ -24,10 +33,15 @@
                 <input type="number" value="<%= items.local.Mtiempo %>" id="Mtiempo" name="Mtiempo" required="">
                 <label for="Mtiempo">Tiempo</label>
             </div>
-            <div>
-                <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
-                <input type="hidden" value="updateData" id="tipo" name="tipo">
-            </div>
+            <div class="file-field input-field col s12">
+                <div class="btn red darken-4">
+                  <span>File</span>
+                  <input type="file" name="image">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path" type="text">
+                </div>
+              </div>
             <button type="submit" class="btn col s12 green darked-3 offset-m2 m8">
                 Actualizar
             </button>
@@ -37,9 +51,9 @@
     <div class="row"> -->
     <!-- </div>
     <div class="row"> -->
-        <form action="/EditMenu" method="POST" class="row">
-            <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
-            <input type="hidden" value="Delete" id="tipo" name="tipo">
+        <form action="/DeleteMenu/<%= items._id %>" method="POST" class="row">
+            <!-- <input type="hidden" value="<%= items._id %>" id="idt" name="idt">
+            <input type="hidden" value="Delete" id="tipo" name="tipo"> -->
             <button type="submit" class="btn red darked-3 col offset-m1 s12 m2"><i class="material-icons right">clear</i>Eliminar</button>
         </form>
     </div>
