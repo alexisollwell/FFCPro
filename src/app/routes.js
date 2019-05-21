@@ -21,10 +21,37 @@ module.exports= (app,passport)=>{
         failureFlash:true
     }));
 
-    app.get('/Cocinero',(req,res)=>{
-        res.render('Cocinero',{
-            title: "Cocinero",
-            user:req.user
+    app.get('/Cocinero', async(req,res)=>{
+        var ordenesPendientes = [];
+        var promisesM = [];
+        const data = await Order.find().then( (orders)=>{
+            orders.forEach( async(elm) =>{
+                if(elm.local.Testado == "Pendiente"){
+                    var dets = [];
+                    await orderItem.find({TDticket: elm.local.TDticket}).then((ordDetail)=>{
+                        console.log(elm.local.Tticket)
+                        ordDetail.forEach((det)=> {
+                            console.log(det.local.TDticket)
+                            // console.log(det.local)
+                            dets.push({producto: det.local.TDproducto, cantidad: det.local.TDcantidad});
+                        });
+                        console.log(dets)
+                    });
+                    ordenesPendientes.push({ticket: elm.local.Tticket, productos: dets, comentario: elm.local.Tcomentaro});
+                }
+            });
+            
+        })
+
+        
+        Promise.all([data]).then(()=>{
+            console.log("ORDENES")
+            console.log(ordenesPendientes);
+            res.render('Cocinero',{
+                title: "Cocinero",
+                user:req.user,
+                ordenes: ordenesPendientes
+            });
         });
     });
 
@@ -81,9 +108,9 @@ module.exports= (app,passport)=>{
     });
 
     app.post('/menu',islogged, (req,res) =>{
-        console.log(req.body.comentario);
+
         const idOrder = randomNumber();
-        const total = 0;
+        var total = 0;
         req.body.Productos.forEach( elm => {
             elm = elm.replace(/\'/g,'"');
             var elmJS = JSON.parse(elm.toString());
@@ -100,9 +127,20 @@ module.exports= (app,passport)=>{
         const NewOrder = new Order();
         NewOrder.local.Tticket = idOrder;
         NewOrder.local.Ttotal=total;
-        NewOrder.local.Tcajero=req.user.UName+" "+req.user.ULastName;
+        NewOrder.local.Tcajero=req.user.local.UName+" "+req.user.local.ULastName;
         NewOrder.local.Tcomentaro=req.body.comentario;
+        NewOrder.local.Testado = "Pendiente";
         NewOrder.save();
+        
+        Menu.find()
+        .then(function(mn) {
+            res.render('menu', {
+                title: "Menu",
+                items: mn,
+                user:req.user,
+                message: "Guardado correctamente con folio " + idOrder
+            });
+        });
     });
 
     app.get('/EditUser', islogged ,(req,res)=>{
