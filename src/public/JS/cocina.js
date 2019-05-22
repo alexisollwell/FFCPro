@@ -10,7 +10,7 @@ function agregarArticulo(elm){
         var datos = document.getElementById(nombre);
         console.log(datos)
         var datosFood =datos.value.split(",");
-        var CantidadDato= datosFood[2];
+        var CantidadDato= datosFood[3];
         var cantidad = CantidadDato.split(":");
         var nuevaCantidad = parseInt(cantidad[1])+1;
         document.getElementsByClassName(nombre)[0].value="{\'ID\':'"+ elm.ID+"',\'nombre\':'"+elm.Nombre+"', \'precio\':"+elm.Precio+', \'cantidad\':'+nuevaCantidad + '}';

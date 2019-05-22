@@ -6,88 +6,30 @@
 <% include ./partials/Initialization %>
 
 <div class="row">
+    <% ordenes.forEach(function(ord) { %>
     <div class="col s12 m3">
         <div class="card-panel white">
-            <h5 class="center">Ticket #0001 </h5>
+            <h5 class="center">Ticket #</h5>
             <div class="divider"></div>
+            <% items.forEach(function(ordItem) { %>
+                <%  if(ord.local.Tticket==ordItem.TDticket){ %>
             <p>
                 <label>
                     <input type="checkbox" />
-                    <span class="black-text">Pozole 1</span>
+                    <span class="black-text"><%= ordItem.TDproducto %></span>
+                    <span class="black-text"><%= ordItem.TDcantidad %></span>
                 </label>
             </p>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Torta 1</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Hamburguesa 2</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Hamburguesa 2</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Hamburguesa 2</span>
-                </label>
-            </p>
+            <% }; %>
+            <% }); %>
             <div class="divider"></div>
             <span class="black-text s12">Comentario:</span>
-            <span>Sin cebolla</span>
+            <span><%= ord.local.Tcomentaro %></span>
             <button class="btn green col s12 m6 offset-m3 disabled" id="">Entregar</button>
             <br><br>
         </div>
     </div>
-    <div class="col s12 m3">
-        <div class="card-panel white">
-            <h5 class="center">Ticket #0002 </h5>
-            <div class="divider"></div>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Hamburguesa 2</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Hamburguesa 2</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Hamburguesa 2</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Hamburguesa 2</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" />
-                    <span class="black-text">Hamburguesa 2</span>
-                </label>
-            </p>
-            <div class="divider"></div>
-            <span class="black-text s12">Comentario:</span>
-            <span>Sin cebolla</span>
-            <button class="btn green col s12 m6 offset-m3">Entregar</button>
-            <br><br>
-        </div>
-    </div>
+    <% }); %>
 </div>
             
 </body>

@@ -21,36 +21,14 @@ module.exports= (app,passport)=>{
         failureFlash:true
     }));
 
-    app.get('/Cocinero', async(req,res)=>{
-        var ordenesPendientes = [];
-        var promisesM = [];
-        const data = await Order.find().then( (orders)=>{
-            orders.forEach( async(elm) =>{
-                if(elm.local.Testado == "Pendiente"){
-                    var dets = [];
-                    await orderItem.find({TDticket: elm.local.TDticket}).then((ordDetail)=>{
-                        console.log(elm.local.Tticket)
-                        ordDetail.forEach((det)=> {
-                            console.log(det.local.TDticket)
-                            // console.log(det.local)
-                            dets.push({producto: det.local.TDproducto, cantidad: det.local.TDcantidad});
-                        });
-                        console.log(dets)
-                    });
-                    ordenesPendientes.push({ticket: elm.local.Tticket, productos: dets, comentario: elm.local.Tcomentaro});
-                }
-            });
-            
-        })
-
-        
-        Promise.all([data]).then(()=>{
-            console.log("ORDENES")
-            console.log(ordenesPendientes);
-            res.render('Cocinero',{
+    app.get('/Cocinero',islogged,AllOrders, async(req,res)=>{
+        Order.find()
+        .then(function(doc) {
+            res.render('Cocinero', {
                 title: "Cocinero",
+                items: req.data,
                 user:req.user,
-                ordenes: ordenesPendientes
+                ordenes:doc
             });
         });
     });
@@ -111,6 +89,9 @@ module.exports= (app,passport)=>{
 
         const idOrder = randomNumber();
         var total = 0;
+        console.log(req.body.Productos);
+        // var list = req.body.Productos.split('|');
+        // console.log(list.length());
         req.body.Productos.forEach( elm => {
             elm = elm.replace(/\'/g,'"');
             var elmJS = JSON.parse(elm.toString());
@@ -120,6 +101,7 @@ module.exports= (app,passport)=>{
             OrderItem.local.TDproducto = elmJS.nombre;
             OrderItem.local.TDcantidad= elmJS.cantidad;
             OrderItem.local.TDprecio = elmJS.precio;
+            OrderItem.local.TDestado="Pendiente";
             OrderItem.save();
             total = total + (elmJS.cantidad*elmJS.precio);
             console.log(elmJS);
@@ -350,6 +332,30 @@ module.exports= (app,passport)=>{
         res.redirect('/menu/agregar');
     })
 };
+
+const AllOrders= async(req,res,next)=>{
+        // const Ordenes = [];
+        const Items = [];
+        // await Order.find()
+        // .then(function(doc) {       
+        //     doc.forEach((elm)=>{
+        //         if(elm.local.Testado=="Pendiente"){
+        //             Ordenes.push(elm.local);
+        //         }
+        //     });
+        // });
+        //req.data=Ordenes;
+        await orderItem.find()
+        .then(function(doc){
+            doc.forEach((elm)=>{
+                if(elm.local.TDestado== "Pendiente"){
+                    Items.push(elm.local);
+                }
+            });
+        });
+        req.data=Items;
+        next();
+}
 
 function islogged(req,res,next){
     if(req.isAuthenticated()){
