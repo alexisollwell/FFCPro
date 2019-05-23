@@ -11,7 +11,7 @@
                 <div class="row">
                         <br>
                     <div class="col s10 offset-s1 white z-depth-3">
-                        <h5 id="h_numTicket">Ticket 0001</h5>
+                        <h5 id="h_numTicket">Ticket</h5>
                         <div class="divider"></div>
                         <div id="prodOrd" class="row">
                         </div>
@@ -61,6 +61,17 @@
     </div>
 </body>
 <script src="/JS/Cocina.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://localhost:3000');
+    function actualizarCheck(id){
+        socket.emit('orderAdded', {idOrder : id});
+    }
+    <% if(typeof ord !== 'undefined'){%>
+        actualizarCheck('<%= ord %>')
+    <% }%>
+    
+</script>
 <style >
 .triangulo_sup {
     width: 0;

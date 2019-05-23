@@ -1,6 +1,14 @@
 const express= require("express");
 const app = express();
+//Sockets
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+//End sockets
 
+//MODELOS PARA SOCKETS
+const Order = require("./app/models/ticket");
+const orderItem = require("./app/models/ticketDetalle");
+//
 
 const path = require("path");
 const mongoose = require("mongoose");
@@ -47,8 +55,31 @@ require("./app/routes")(app,passport);
 //static files
 app.use(express.static(path.join(__dirname,"public")));
 
+//Sockets
+io.on('connection', function(socket){
+    socket.on('updateDetail', function (data) {
+        orderItem.findById(data.detail).then((elm)=>{
+            if(data.check)
+            { elm.local.TDestado = 'Tomado'; }
+            else{ elm.local.TDestado = 'Pendiente'; }
+            elm.save()
+        });
+        io.emit('updateDetailR', data);
+        
+    });
+    socket.on('endTicket', function (data) {
+        Order.findById(data.ticket).then((elm)=>{
+            elm.local.Testado = 'Terminado';
+            elm.save()
+        });
+        io.emit('removeTicket', data);
+    });
+    socket.on('orderAdded', function (data) {
+        
+        io.emit('newOrden', data);
+    });
+});
 
-
-app.listen(app.get('port'),()=>{
+http.listen(app.get('port'),()=>{
     console.log('server on port ',app.get('port'));
 });

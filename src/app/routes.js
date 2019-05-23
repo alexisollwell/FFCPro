@@ -4,10 +4,14 @@ const Order = require("../app/models/ticket");
 const orderItem = require("../app/models/ticketDetalle");
 const { randomNumber } = require('../helpers/libs');
 
+
 const fs = require('fs-extra');
 const path = require('path');
 
 module.exports= (app,passport)=>{
+    var http = require('http').Server(app);
+    var io = require('socket.io')(http);
+
     app.get('/',(req,res)=>{
         res.render('index',{
             title: "Iniciar seción",
@@ -85,7 +89,7 @@ module.exports= (app,passport)=>{
       
     });
 
-    app.post('/menu',islogged, (req,res) =>{
+    app.post('/menu',islogged, async(req,res) =>{
 
         const idOrder = randomNumber();
         var total = 0;
@@ -120,7 +124,8 @@ module.exports= (app,passport)=>{
                 title: "Menu",
                 items: mn,
                 user:req.user,
-                message: "Guardado correctamente con folio " + idOrder
+                message: "Guardado correctamente con folio " + idOrder,
+                ord: idOrder
             });
         });
     });
@@ -348,8 +353,8 @@ const AllOrders= async(req,res,next)=>{
         await orderItem.find()
         .then(function(doc){
             doc.forEach((elm)=>{
-                if(elm.local.TDestado== "Pendiente"){
-                    Items.push(elm.local);
+                if(elm.local.TDestado== "Pendiente" || elm.local.TDestado== "Tomado"){
+                    Items.push(elm);
                 }
             });
         });
@@ -373,10 +378,10 @@ function islogged(req,res,next){
                     });
                 }
                 if(userJob==3){
-                    res.render('Cocinero',{
-                        title:"Cocinero",
-                        user:req.user
-                    });
+                    if(req.route.path == "/Cocinero")
+                        return next();
+                    else
+                        res.redirect('/')
                 }
             }
         }

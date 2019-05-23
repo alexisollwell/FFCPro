@@ -5,19 +5,24 @@
     <% include ./partials/nav %>
 <% include ./partials/Initialization %>
 
-<div class="row">
+<div class="row" id="divOrders">
     <% ordenes.forEach(function(ord) { %>
-    <div class="col s12 m3">
+        <%  if(ord.local.Testado == "Pendiente"){ %>
+    <div class="col s12 m3" id="<%= ord.id %>">
         <div class="card-panel white">
             <h5 class="center">Ticket #</h5>
             <div class="divider"></div>
-            <% items.forEach(function(ordItem) { %>
-                <%  if(ord.local.Tticket==ordItem.TDticket){ %>
+                <% items.forEach(function(ordItem) { %>
+                <%  if(ord.local.Tticket==ordItem.local.TDticket){ %>
             <p>
                 <label>
-                    <input type="checkbox" />
-                    <span class="black-text"><%= ordItem.TDproducto %></span>
-                    <span class="black-text"><%= ordItem.TDcantidad %></span>
+                        <%  if(ordItem.local.TDestado == "Tomado"){ %>
+                    <input type="checkbox" class="<%= ord.id %>" checked="true" id="<%= ordItem.id %>" onclick="actualizarCheck('<%= ordItem.id %>', this)" />
+                    <% }else { %>
+                        <input type="checkbox" class="<%= ord.id %>" id="<%= ordItem.id %>" onclick="actualizarCheck('<%= ordItem.id %>', this)" />
+                    <% } %>
+                    <span class="black-text"><%= ordItem.local.TDproducto %></span>
+                    <span class="black-text"><%= ordItem.local.TDcantidad %></span>
                 </label>
             </p>
             <% }; %>
@@ -25,12 +30,81 @@
             <div class="divider"></div>
             <span class="black-text s12">Comentario:</span>
             <span><%= ord.local.Tcomentaro %></span>
-            <button class="btn green col s12 m6 offset-m3 disabled" id="">Entregar</button>
+            <button class="btn green col s12 m6 offset-m3 disabled" id="btn-<%= ord.id %>" onclick="terminarTicket('<%= ord.id %>')">Entregar</button>
             <br><br>
         </div>
     </div>
+    <% } %>
     <% }); %>
 </div>
-            
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    function verificarOrden(classTicket){
+        const td = document.getElementsByClassName(classTicket);
+        var terminar = true;
+        for(var i= 0; i < td.length; i++){
+            var elmnt = td[i];
+            if(!elmnt.checked){
+                terminar = false;
+            }    
+        }
+        
+
+        if(terminar){
+            document.getElementById('btn-'+classTicket).classList.remove("disabled");
+        }else{
+            document.getElementById('btn-'+classTicket).classList.add("disabled");
+        }
+    }
+
+    var socket = io.connect('http://localhost:3000');
+    function actualizarCheck(idDetalle, elm){
+        socket.emit('updateDetail', {detail : idDetalle, check: elm.checked, ord: elm.className });
+    }
+
+    socket.on('updateDetailR', function(emt){
+        document.getElementById(emt.detail).checked = emt.check;
+        verificarOrden(emt.ord);
+    });
+
+    socket.on('newOrden', function(emt){
+        console.log(emt);
+    //     '<div class="col s12 m3" id="ORDENID">\
+    //     <div class="card-panel white">\
+    //         <h5 class="center">Ticket #</h5>\
+    //         <div class="divider"></div>\
+    //             FOR DE DETALLES
+    //             CONDICION TICKET IGUAL AL TICKET DETALLE
+    //         <p>\
+    //             <label>\
+    //                     COMPARAR ESTADO\
+    //                 <input type="checkbox" class="ORDENID" checked="true" id="DETALLEID" onclick="actualizarCheck(\'DETALLEID\', this)" />\
+    //                 ELSE\
+    //                     <input type="checkbox" class="ORDENID" id="DETALLEID" onclick="actualizarCheck(\'DETALLEID\', this)" />\
+    //                 //endif\
+    //                 <span class="black-text">PRODUCTO</span>\
+    //                 <span class="black-text">CANTIDAD</span>\
+    //             </label>\
+    //         </p>\
+    //        TERMINA CONDICION Estado\
+    //         TERMINA FOR
+    //         <div class="divider"></div>\
+    //         <span class="black-text s12">Comentario:</span>\
+    //         <span>COMENTARIO</span>\
+    //         <button class="btn green col s12 m6 offset-m3 disabled" id="btn-IDORDEN" onclick="terminarTicket(\'IDORDEN\')">Entregar</button>\
+    //         <br><br>\
+    //     </div>\
+    // </div>';
+    //     document.getElementById('divOrders').appendChild();
+    });
+    socket.on('removeTicket', function(emt){
+        document.getElementById(emt.ticket).remove()
+    });
+
+    function terminarTicket(idTicket){
+        socket.emit('endTicket', {ticket: idTicket});
+    }
+</script>
 </body>
 </html>
