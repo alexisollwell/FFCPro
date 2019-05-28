@@ -70,33 +70,33 @@
 
     socket.on('newOrden', function(emt){
         console.log(emt);
-    //     '<div class="col s12 m3" id="ORDENID">\
-    //     <div class="card-panel white">\
-    //         <h5 class="center">Ticket #</h5>\
-    //         <div class="divider"></div>\
-    //             FOR DE DETALLES
-    //             CONDICION TICKET IGUAL AL TICKET DETALLE
-    //         <p>\
-    //             <label>\
-    //                     COMPARAR ESTADO\
-    //                 <input type="checkbox" class="ORDENID" checked="true" id="DETALLEID" onclick="actualizarCheck(\'DETALLEID\', this)" />\
-    //                 ELSE\
-    //                     <input type="checkbox" class="ORDENID" id="DETALLEID" onclick="actualizarCheck(\'DETALLEID\', this)" />\
-    //                 //endif\
-    //                 <span class="black-text">PRODUCTO</span>\
-    //                 <span class="black-text">CANTIDAD</span>\
-    //             </label>\
-    //         </p>\
-    //        TERMINA CONDICION Estado\
-    //         TERMINA FOR
-    //         <div class="divider"></div>\
-    //         <span class="black-text s12">Comentario:</span>\
-    //         <span>COMENTARIO</span>\
-    //         <button class="btn green col s12 m6 offset-m3 disabled" id="btn-IDORDEN" onclick="terminarTicket(\'IDORDEN\')">Entregar</button>\
-    //         <br><br>\
-    //     </div>\
-    // </div>';
-    //     document.getElementById('divOrders').appendChild();
+        `<div class="col s12 m3" id="ORDENID">\
+        <div class="card-panel white">\
+            <h5 class="center">Ticket #</h5>\
+            <div class="divider"></div>\
+                FOR DE DETALLES
+                CONDICION TICKET IGUAL AL TICKET DETALLE
+            <p>\
+                <label>\
+                        COMPARAR ESTADO\
+                    <input type="checkbox" class="ORDENID" checked="true" id="DETALLEID" onclick="actualizarCheck(\'DETALLEID\', this)" />\
+                    ELSE\
+                        <input type="checkbox" class="ORDENID" id="DETALLEID" onclick="actualizarCheck(\'DETALLEID\', this)" />\
+                    //endif\
+                    <span class="black-text">PRODUCTO</span>\
+                    <span class="black-text">CANTIDAD</span>\
+                </label>\
+            </p>\
+           TERMINA CONDICION Estado\
+            TERMINA FOR
+            <div class="divider"></div>\
+            <span class="black-text s12">Comentario:</span>\
+            <span>${}</span>
+            <button class="btn green col s12 m6 offset-m3 disabled" id="btn-IDORDEN" onclick="terminarTicket(\'IDORDEN\')">Entregar</button>\
+            <br><br>
+        </div>
+    </div>`;
+        document.getElementById('divOrders').appendChild();
     });
     socket.on('removeTicket', function(emt){
         document.getElementById(emt.ticket).remove()

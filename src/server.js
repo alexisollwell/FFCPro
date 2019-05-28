@@ -36,7 +36,7 @@ app.set('view engine', 'ejs');
 
 //middelwears
 app.use(morgan('dev'));
-app.use(multer({dest: path.join(__dirname,'./public/uploads/temp')}).single('image'));
+app.use(multer({dest: path.join(__dirname,'./public/uploads/temp')}).fields([{name:'image'},{name: 'imageUser'}]))
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.json());

@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
         Ujob: {type: Number,require: true},
         UPhone: {type: Number,require: true},
         email: {type: String,require: true},
-        password: {type: String,require: true}
+        password: {type: String,require: true},
+        UFoto :{type: String,default: "user.png"}
     }
 });
 

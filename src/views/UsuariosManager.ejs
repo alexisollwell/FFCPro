@@ -56,12 +56,21 @@
                 <ul class="collection">
                     <% items.forEach(function(user) { %>
                         <li class="collection-item avatar" >
-                            <img src="/images/user.png" alt="" class="circle">
-                            <p><%= user.local.UName %></p>
-                            <p><%= user.local.ULastName %><br>
+                            <img src="/uploads/<%= user.local.UFoto %>" alt="" class="circle">
+                            <p><%= user.local.UName %> <%= user.local.ULastName %></p>
                                 <%= user.local.email %>
+                                <% if(user.local.Ujob == "1"){ %>
+                                    <p>Administrador</p>
+                                <% } else if(user.local.Ujob == "2") {%>
+                                    <p>Cajero</p>
+                                <% } else if(user.local.Ujob == "3"){%>
+                                    <p>Cocinero</p>
+                                <% } else{ %>
+                                    <p> Sin tipo </p>
+                                <% } %>
+
                             </p>
-                            <a class="secondary-content " href="/EditUser/?id=<%= user._id %>"><i class="material-icons">create</i></a>
+                            <a class="secondary-content tooltipped" data-position="left" data-tooltip="Editar usuario <%= user.local.UName %>" href="/EditUser/?id=<%= user._id %>"><i class="material-icons">create</i></a>
                         </li>                  
                     <% }); %>
                 </ul>

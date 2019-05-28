@@ -4,10 +4,20 @@
 <body>
     <% include ./partials/nav %>
     <div class="row container">
-        <form action="/EditUser" method="POST">
+        <form action="/EditUser" method="POST" enctype="multipart/form-data">
             <div class="col s12 m4">
             <h4 class="Rheader">Modificar datos</h4>
             <div class="divider"></div>
+            <div class="row">
+                <div class="col s12 m8 offset-m2">
+                  <div class="card">
+                    <div class="card-image">
+                      <img onclick="changeimage()" id="foto_user" src="/uploads/<%= items.local.UFoto %>">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <input class="hide" id="inp_foto" name="imageUser" type="file" onchange="readURL(this);" >
             <div class="input-field">
                 <input type="text" value="<%= items.local.UName %>" id="name" name="name" required="">
                 <label for="name">Nombre</label>
@@ -58,7 +68,8 @@
         </form>
     <!-- </div>
     <div class="row"> -->
-        <form action="/EditUser" method="POST" class="col s12 m4 offset-m1">
+        <form action="/EditUser" method="POST" enctype="multipart/form-data"  class="col s12 m4 offset-m1">
+            
             <h4 class="Rheader">Modificar contraseña</h4>
             <% include ./partials/msg %>
             <div class="input-field">
@@ -84,5 +95,19 @@
         </form>
     </div>
     <% include ./partials/Initialization %>
+    <script>
+    function changeimage(){
+        document.getElementById("inp_foto").click();
+    }
+    function readURL(input) {
+            if (input.files && input.files[0]) {
+                  var reader = new FileReader();
+                  reader.onload = function (e) {
+                        document.getElementById("foto_user").setAttribute("src",e.target.result)
+                  };
+                  reader.readAsDataURL(input.files[0]);
+            }
+      }
+    </script>
 </body>
 </html>

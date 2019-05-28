@@ -147,8 +147,48 @@ module.exports= (app,passport)=>{
 
     app.post('/EditUser', islogged ,(req,res)=>{
         if(req.body.tipo=="updateData"){
+            var id = req.body.idt;
+            const saveUser = async (file) => {
+
+                var correcto = true;
+                const imgUrl = randomNumber();
+                const images = await UsersData.find({ UFoto: imgUrl });  
+                
+                if(images.length > 0){
+                    saveUser(file);
+                }else{
+                    const ext = path.extname(file.originalname).toLowerCase();
+                    const imageTempPath = file.path;
+                    const targetPath = path.resolve(`src/public/uploads/${imgUrl}${ext}`);
+    
+                    if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+                        // you wil need the public/temp path or this will throw an error
+                        const ad = await fs.rename(imageTempPath, targetPath);
+    
+                        UsersData.findById(id, function(err, doc) {
+                            if (err) {
+                            console.error('error, no entry found');
+                            }
+                            doc.local.UFoto=imgUrl + ext;
+                            doc.save();
+                        });
+    
+                        if(correcto){
+                            res.redirect('/Usuarios')
+                        }else{
+                            res.render('/EditUser',req.flash("loginMessage","No se pudo guardar la foto, intente nuevamente."));
+                        }
+                    } else {
+                        await fs.unlink(imageTempPath);
+                        res.render('/EditUser',req.flash("loginMessage","Solo se permiten imagenes."));
+                    }
+                }
+            }
+            
+            
             console.log("up");
             var id = req.body.idt;
+            var editPick = false;
             UsersData.findById(id, function(err, doc) {
                 if (err) {
                 console.error('error, no entry found');
@@ -159,6 +199,10 @@ module.exports= (app,passport)=>{
                 doc.local.UPhone=req.body.phone;
                 doc.local.Ujob=req.body.Jobs;
                 doc.save();
+                console.log(req.files)
+                if(typeof req.files.imageUser !== 'undefined'){
+                    saveUser(req.files.imageUser[0]);
+                }
             })
             res.redirect('/Usuarios');
         }
@@ -218,7 +262,7 @@ module.exports= (app,passport)=>{
             if(images.length > 0){
                 saveProduct();
             }else{
-                const ext = path.extname(req.file.originalname).toLowerCase();
+                const ext = path.extname(req.files.image.originalname).toLowerCase();
                 const imageTempPath = req.file.path;
                 const targetPath = path.resolve(`src/public/uploads/${imgUrl}${ext}`);
 
@@ -372,10 +416,15 @@ function islogged(req,res,next){
                 return next();
             }else{
                 if(userJob==2){
-                    res.render('menu',{
-                        title:"Menu",
-                        user:req.user
-                    });
+                    if(req.route.path == "/menu"){
+                        return next();
+                    }else{
+                        res.render('menu',{
+                            title:"Menu",
+                            user:req.user
+                        });
+
+                    }
                 }
                 if(userJob==3){
                     if(req.route.path == "/Cocinero")

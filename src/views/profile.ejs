@@ -2,22 +2,54 @@
 <html lang="en">
 <% include ./partials/head %>
 <body>
-    <% include ./partials/nav %>
-    <h1>Name:</h1>
-    <h2><%= user.local.UName %></h2>
-    <h2><%= user.local.ULastName %></h2>
-    <h1>Phone:</h1>
-    <h2><%= user.local.UPhone %></h2>
-    <h1>Emai:</h1>
-    <h2><%= user.local.email %></h2>
-    <h1>Password:</h1>
-    <h2><%= user.local.password %></h2>
-    <h1>Tipo:</h1>
-    <h2><%= user.local.Ujob %></h2>
-
-    <form action="/logout" method="GET">
-        <button type="submit">LogOut</button>
-    </form>
+        <% include ./partials/nav %>
+    <div class="container">
+        <div class="col s12 m6 offset-m3">
+                <h4 class="Rheader">Perfil</h4>
+                <div class="divider"></div>
+                <div class="row">
+                    <div class="col s12 m6 offset-m3">
+                      <div class="card s12 col m6 offset-m3">
+                        <div class="card-image">
+                          <img src="/uploads/<%= user.local.UFoto %>">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="input-field">
+                    <input type="text" value="<%= user.local.UName %>" id="name" name="name" readonly="">
+                    <label for="name">Nombre</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" value="<%= user.local.ULastName %>" id="lastname" name="lastname" readonly="">
+                    <label for="lastname">Apellidos</label>
+                </div>
+                <div class="input-field">
+                    <input type="number" value="<%= user.local.UPhone %>" id="phone" name="phone" readonly="">
+                    <label for="phone">Teléfono</label>
+                </div>
+                <div class="input-field">
+                    <input type="email" value="<%= user.local.email %>" id="email" name="email" readonly="">
+                    <label for="email">Correo</label>
+                </div>
+                <div class="input-field">
+                    <select disabled>
+                        <% if(user.local.Ujob == "1"){ %>
+                            <option value="1" selected disabled>Administrador</option>
+                        <% } else if(user.local.Ujob == "2") {%>
+                            <option value="2" selected disabled>Cajero</option>
+                        <% } else if(user.local.Ujob == "3"){%>
+                            <option value="3" selected disabled>Cocinero</option>
+                        <% } else{ %>
+                            <option value="0" selected disabled>Sin especificar</option>
+                        <% } %>
+                    </select>
+                    <label>Puesto</label>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
     <% include ./partials/Initialization %>
 </body>
 </html>
