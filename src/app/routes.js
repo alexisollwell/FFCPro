@@ -3,7 +3,8 @@ const UsersData = require("../app/models/user");
 const Order = require("../app/models/ticket");
 const orderItem = require("../app/models/ticketDetalle");
 const { randomNumber } = require('../helpers/libs');
-
+const listFecha =[];
+const listCantidad =[];
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -34,6 +35,17 @@ module.exports= (app,passport)=>{
                 user:req.user,
                 ordenes:doc
             });
+        });
+    });
+
+    app.get('/Reportes',islogged,ChartData, async(req,res)=>{     
+        console.log(listFecha);
+        console.log(listCantidad);
+        res.render('reportes', {
+            title: "Reportes",
+            user:req.user,
+            listaFechas:listFecha,
+            listaCantidad:listCantidad
         });
     });
 
@@ -93,6 +105,7 @@ module.exports= (app,passport)=>{
 
         const idOrder = randomNumber();
         var total = 0;
+        var TDate = new Date();
         console.log(req.body.Productos);
         // var list = req.body.Productos.split('|');
         // console.log(list.length());
@@ -116,6 +129,7 @@ module.exports= (app,passport)=>{
         NewOrder.local.Tcajero=req.user.local.UName+" "+req.user.local.ULastName;
         NewOrder.local.Tcomentaro=req.body.comentario;
         NewOrder.local.Testado = "Pendiente";
+        NewOrder.local.TFecha=TDate.toISOString().slice(0,10);
         NewOrder.save();
         
         Menu.find()
@@ -381,6 +395,23 @@ module.exports= (app,passport)=>{
         res.redirect('/menu/agregar');
     })
 };
+
+const ChartData = async(req,res,next)=>{
+    while(listCantidad.length > 0){
+        listCantidad.pop(); 
+    }
+    while(listFecha.length > 0){
+        listFecha.pop(); 
+    }
+    await Order.find()
+        .then(function(doc) {       
+            doc.forEach((elm)=>{
+                listFecha.push(elm.local.TFecha);
+                listCantidad.push(elm.local.Ttotal);
+            });
+        });
+        next();
+}
 
 const AllOrders= async(req,res,next)=>{
         // const Ordenes = [];
