@@ -5,6 +5,7 @@ const orderItem = require("../app/models/ticketDetalle");
 const { randomNumber } = require('../helpers/libs');
 const listFecha =[];
 const listCantidad =[];
+const listCuantos= [];
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -45,7 +46,8 @@ module.exports= (app,passport)=>{
             title: "Reportes",
             user:req.user,
             listaFechas:listFecha,
-            listaCantidad:listCantidad
+            listaCantidad:listCantidad,
+            listaCuantos:listCuantos
         });
     });
 
@@ -397,18 +399,30 @@ module.exports= (app,passport)=>{
 };
 
 const ChartData = async(req,res,next)=>{
+    while(listCuantos.length > 0){
+        listCantidad.pop(); 
+    }
     while(listCantidad.length > 0){
         listCantidad.pop(); 
     }
     while(listFecha.length > 0){
         listFecha.pop(); 
     }
+    var terminado =0;
+    var noterm = 0;
     await Order.find()
         .then(function(doc) {       
             doc.forEach((elm)=>{
+                if(elm.local.Testado="Terminado"){
+                    terminado=terminado+1;
+                }else{
+                    noterm=noterm+1;
+                }
                 listFecha.push(elm.local.TFecha);
                 listCantidad.push(elm.local.Ttotal);
             });
+            listCuantos.push(terminado);
+            listCuantos.push(noterm);
         });
         next();
 }
