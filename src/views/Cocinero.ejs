@@ -40,6 +40,20 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    function actualizarHeith(){
+        var elmsC = document.getElementsByClassName('card-panel')   
+        var maxH = 0
+        for(var i =0; i< elmsC.length; i++){
+            if(elmsC[i].offsetHeight > maxH){
+                maxH= elmsC[i].offsetHeight
+            }
+        }
+        for(var i =0; i< elmsC.length; i++){
+            elmsC[i].style.height = maxH + " !important";
+        }
+
+
+    }
     function verificarOrden(classTicket){
         const td = document.getElementsByClassName(classTicket);
         var terminar = true;
@@ -91,20 +105,23 @@
             TERMINA FOR
             <div class="divider"></div>\
             <span class="black-text s12">Comentario:</span>\
-            <span>${}</span>
+            <span>$</span>
             <button class="btn green col s12 m6 offset-m3 disabled" id="btn-IDORDEN" onclick="terminarTicket(\'IDORDEN\')">Entregar</button>\
             <br><br>
         </div>
     </div>`;
-        document.getElementById('divOrders').appendChild();
+    document.getElementById('divOrders').appendChild();
+        actualizarHeith();
     });
     socket.on('removeTicket', function(emt){
         document.getElementById(emt.ticket).remove()
+        actualizarHeith();
     });
 
     function terminarTicket(idTicket){
         socket.emit('endTicket', {ticket: idTicket});
     }
+    actualizarHeith();
 </script>
 </body>
 </html>
