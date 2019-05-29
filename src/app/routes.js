@@ -105,19 +105,17 @@ module.exports= (app,passport)=>{
             if(elm != null){
                 iva = elm.local.CIva;                
             }
-        });
-
-        Menu.find()
-        .then(function(mn) {
-            res.render('menu', {
-                title: "Menu",
-                items: mn,
-                iva: iva,
-                user:req.user,
-                message: req.flash('signupMessage')
+            Menu.find()
+            .then(function(mn) {
+                res.render('menu', {
+                    title: "Menu",
+                    items: mn,
+                    iva: iva,
+                    user:req.user,
+                    message: req.flash('signupMessage')
+                });
             });
-        });
-        
+        });       
       
     });
 
