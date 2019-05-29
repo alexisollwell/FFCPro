@@ -9,7 +9,8 @@
                     <li><a href="/usuarios"><i class="material-icons left">assignment_ind</i>Empleados</a></li>
                     <li><a href="/menu/agregar"><i class="material-icons left">local_dining</i>Productos</a></li>
                     <li><a class="dropdown-trigger" href="#!" data-target="dropdownTrabajo">Trabajo<i class="material-icons right">arrow_drop_down</i><i class="material-icons left">hot_tub</i></a></li>
-                    <li><a href="/Reportes"><i class="material-icons left">insert_chart</i>Reportes</a></li>
+                    <li><a class="dropdown-trigger" href="#!" data-target="dropdownReportes">Reportes<i class="material-icons right">arrow_drop_down</i><i class="material-icons left">insert_chart</i></a></li>
+                    <!-- <li><a href="/Reportes"><i class="material-icons left">insert_chart</i>Reportes</a></li> -->
                 <% } else if(user.local.Ujob == 2){ %>
                     <li><a href="/menu"><i class="material-icons left">monetization_on</i>Caja</a></li>                    
                 <% } else if(user.local.Ujob == 3){ %>
@@ -31,12 +32,17 @@
             <li><a href="/menu"><i class="material-icons left">monetization_on</i>Caja</a></li>                    
             <li><a href="/Cocinero"><i class="material-icons left">receipt</i>Ordenes</a></li>
     </ul>
-
+    <ul id="dropdownReportes" class="dropdown-content">
+        <li><a href="/Reportes"><i class="material-icons left">insert_chart</i>Ventas</a></li>                    
+        <li><a href="/ReportesSegundo"><i class="material-icons left">insert_chart</i>Ordenes</a></li>
+    </ul>
     <ul class="sidenav" id="mobile-demo">
         <% if(user.local.Ujob == 1) {%>
         <li><a href="/usuarios"><i class="material-icons left">assignment_ind</i>Empleados</a></li>
         <li><a href="/menu/agregar"><i class="material-icons left">local_dining</i>Productos</a></li>
-        <li><a href="/Reportes"><i class="material-icons left">insert_chart</i>Reportes</a></li>
+        <!-- <li><a href="/Reportes"><i class="material-icons left">insert_chart</i>Reportes</a></li> -->
+        <li><a href="/Reportes"><i class="material-icons left">insert_chart</i>Ventas</a></li>                    
+        <li><a href="/ReportesSegundo"><i class="material-icons left">insert_chart</i>Ordenes</a></li>
         <li><a class="subheader">Trabajo</a></li>
         <div class="divider"></div>
         <li><a href="/menu"><i class="material-icons left">monetization_on</i>Caja</a></li>                    
