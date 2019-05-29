@@ -9,7 +9,9 @@ const ticket = new mongoose.Schema({
         Testado: {type: String},
         Tcomentaro: {type: String, require: true},
         Tllevar: {type: Boolean},
-        Testado: {type: String, require: true}
+        Testado: {type: String, require: true},
+        TFecha: {type: String, require: true}
+
     }
 });
 

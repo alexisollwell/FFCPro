@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ./partials/head %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<body>
+        <% include ./partials/nav %>
+    <div class="container">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div class="container">
+        <canvas id="LaChart"></canvas>
+    </div>
+    <% include ./partials/Initialization %>
+    <script>
+        let myChart = document.getElementById('myChart').getContext("2d");
+        var Lfecha = "<%= listaFechas %>".split(',');
+        var LCantidad = "<%= listaCantidad %>".split(',');
+        let barChart = new Chart(myChart,{
+            type:'bar',
+            data:{
+                labels: Lfecha,
+                datasets:[{
+                    label:'Ventas',
+                    data:LCantidad
+                }]
+            },
+            options:{}
+        });
+
+        let LaChart = document.getElementById('LaChart').getContext("2d");
+        var LCuantos = "<%= listaCuantos %>".split(',');
+        let barChart = new Chart(LaChart,{
+            type:'bar',
+            data:{
+                labels: ["Terminados","Preparando"],
+                datasets:[{
+                    label:'Estado',
+                    data:LCuantos
+                }]
+            },
+            options:{}
+        });
+    </script>
+</body>
+</html>
