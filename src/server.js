@@ -75,8 +75,15 @@ io.on('connection', function(socket){
         io.emit('removeTicket', data);
     });
     socket.on('orderAdded', function (data) {
-        
-        io.emit('newOrden', data);
+        Order.find({'local.Tticket':idOrder}).then((elm)=>{
+            orderItem.find({'local.TDticket': idOrder}).then((tds)=>{
+                var resp = {
+                    order: elm,
+                    detail: tds
+                }
+                io.emit('newOrden', resp);
+            });
+        });
     });
 });
 

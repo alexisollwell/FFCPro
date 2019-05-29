@@ -262,8 +262,8 @@ module.exports= (app,passport)=>{
             if(images.length > 0){
                 saveProduct();
             }else{
-                const ext = path.extname(req.files.image.originalname).toLowerCase();
-                const imageTempPath = req.file.path;
+                const ext = path.extname(req.files.image[0].originalname).toLowerCase();
+                const imageTempPath = req.files.image[0].path;
                 const targetPath = path.resolve(`src/public/uploads/${imgUrl}${ext}`);
 
                 if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
@@ -332,8 +332,8 @@ module.exports= (app,passport)=>{
             if(images.length > 0){
                 changeImage();
             }else{
-                const ext = path.extname(req.file.originalname).toLowerCase();
-                const imageTempPath = req.file.path;
+                const ext = path.extname(req.files.image[0].originalname).toLowerCase();
+                const imageTempPath = req.files.image[0].path;
                 const targetPath = path.resolve(`src/public/uploads/${imgUrl}${ext}`);
 
                 if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
@@ -368,7 +368,7 @@ module.exports= (app,passport)=>{
             }
         }
 
-        if(req.file != undefined){
+        if(req.files.image != undefined){
             changeImage().then(res.redirect('/menu/agregar'));
         }else{   
             res.redirect('/menu/agregar');
