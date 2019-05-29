@@ -5,20 +5,11 @@
 <body>
         <% include ./partials/nav %>
         <div class="row">
-            <div class="col s4">
-                <h6 aling="center"><a href="/Reportes"></a>Grafica de Ventas</h6>
-            </div>
-            <div class="col s4">
-                <h4 align="center">Grafica Terminados</h4>
-            </div>
-            <div class="col s4">
-                    <h6 align="center">Grafica de ganancia neta</h6>
-                </div>
+            <h4 align="center">Grafica Terminados</h4>
         </div>
     <div class="container">
         <canvas id="myChart"></canvas>
     </div>
-    <button>Ver Pendientes</button>
     <% include ./partials/Initialization %>
     <script>
         let myChart = document.getElementById('myChart').getContext("2d");
