@@ -46,7 +46,15 @@ module.exports= (app,passport)=>{
             title: "Reportes",
             user:req.user,
             listaFechas:listFecha,
-            listaCantidad:listCantidad,
+            listaCantidad:listCantidad
+        });
+    });
+
+    app.post('/ReportesSegundo',islogged,SegundoChart, async(req,res)=>{     
+        console.log(listCuantos);
+        res.render('reportesSegunda', {
+            title: "Reportes",
+            user:req.user,
             listaCuantos:listCuantos
         });
     });
@@ -397,7 +405,26 @@ module.exports= (app,passport)=>{
         res.redirect('/menu/agregar');
     })
 };
-
+const SegundoChart = async(req,res,next)=>{
+    while(listCuantos.length > 0){
+        listCantidad.pop(); 
+    }
+    var terminado =0;
+    var noterm = 0;
+    await Order.find()
+        .then(function(doc) {       
+            doc.forEach((elm)=>{
+                if(elm.local.Testado="Terminado"){
+                    terminado=terminado+1;
+                }else{
+                    noterm=noterm+1;
+                }
+            });
+            listCuantos.push(terminado);
+            listCuantos.push(noterm);
+        });
+        next();
+}
 const ChartData = async(req,res,next)=>{
     while(listCuantos.length > 0){
         listCantidad.pop(); 
