@@ -75,8 +75,8 @@ io.on('connection', function(socket){
         io.emit('removeTicket', data);
     });
     socket.on('orderAdded', function (data) {
-        Order.find({'local.Tticket':idOrder}).then((elm)=>{
-            orderItem.find({'local.TDticket': idOrder}).then((tds)=>{
+        Order.find({'local.Tticket':data.idOrder}).then((elm)=>{
+            orderItem.find({'local.TDticket': data.idOrder}).then((tds)=>{
                 var resp = {
                     order: elm,
                     detail: tds

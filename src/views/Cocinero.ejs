@@ -10,26 +10,26 @@
         <%  if(ord.local.Testado == "Pendiente"){ %>
     <div class="col s12 m3" id="<%= ord.id %>">
         <div class="card-panel white">
-            <h5 class="center">Ticket #</h5>
+            <h5 class="center">Ticket <%= ord.local.Tticket %></h5>
             <div class="divider"></div>
                 <% items.forEach(function(ordItem) { %>
                 <%  if(ord.local.Tticket==ordItem.local.TDticket){ %>
             <p>
                 <label>
-                        <%  if(ordItem.local.TDestado == "Tomado"){ %>
-                    <input type="checkbox" class="<%= ord.id %>" checked="true" id="<%= ordItem.id %>" onclick="actualizarCheck('<%= ordItem.id %>', this)" />
+                    <%  if(ordItem.local.TDestado == "Tomado"){ %>
+                        <input type="checkbox" class="<%= ord.id %>" checked="true" id="<%= ordItem.id %>" onclick="actualizarCheck('<%= ordItem.id %>', this)" />
                     <% }else { %>
                         <input type="checkbox" class="<%= ord.id %>" id="<%= ordItem.id %>" onclick="actualizarCheck('<%= ordItem.id %>', this)" />
                     <% } %>
                     <span class="black-text"><%= ordItem.local.TDproducto %></span>
-                    <span class="black-text"><%= ordItem.local.TDcantidad %></span>
+                    <span class="black-text" style="float: right;padding-right: 50px;" ><%= ordItem.local.TDcantidad %></span>
                 </label>
             </p>
             <% }; %>
             <% }); %>
             <div class="divider"></div>
             <span class="black-text s12">Comentario:</span>
-            <span><%= ord.local.Tcomentaro %></span>
+            <p><%= ord.local.Tcomentaro %></p>
             <button class="btn green col s12 m6 offset-m3 disabled" id="btn-<%= ord.id %>" onclick="terminarTicket('<%= ord.id %>')">Entregar</button>
             <br><br>
         </div>
@@ -40,16 +40,17 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    function actualizarHeith(){
+    function actualizarHeigth(){
         var elmsC = document.getElementsByClassName('card-panel')   
         var maxH = 0
         for(var i =0; i< elmsC.length; i++){
+            elmsC[i].setAttribute('style',"");
             if(elmsC[i].offsetHeight > maxH){
                 maxH= elmsC[i].offsetHeight
             }
         }
         for(var i =0; i< elmsC.length; i++){
-            elmsC[i].style.height = maxH + " !important";
+            elmsC[i].setAttribute('style', 'height:' + maxH + "px !important;");
         }
 
 
@@ -82,46 +83,50 @@
         verificarOrden(emt.ord);
     });
 
-    socket.on('newOrden', function(emt){
-        console.log(emt);
-        `<div class="col s12 m3" id="ORDENID">\
-        <div class="card-panel white">\
-            <h5 class="center">Ticket #</h5>\
-            <div class="divider"></div>\
-                FOR DE DETALLES
-                CONDICION TICKET IGUAL AL TICKET DETALLE
-            <p>\
-                <label>\
-                        COMPARAR ESTADO\
-                    <input type="checkbox" class="ORDENID" checked="true" id="DETALLEID" onclick="actualizarCheck(\'DETALLEID\', this)" />\
-                    ELSE\
-                        <input type="checkbox" class="ORDENID" id="DETALLEID" onclick="actualizarCheck(\'DETALLEID\', this)" />\
-                    //endif\
-                    <span class="black-text">PRODUCTO</span>\
-                    <span class="black-text">CANTIDAD</span>\
-                </label>\
-            </p>\
-           TERMINA CONDICION Estado\
-            TERMINA FOR
-            <div class="divider"></div>\
-            <span class="black-text s12">Comentario:</span>\
-            <span>$</span>
-            <button class="btn green col s12 m6 offset-m3 disabled" id="btn-IDORDEN" onclick="terminarTicket(\'IDORDEN\')">Entregar</button>\
+    socket.on('newOrden', function(elm){
+        console.log(elm);
+        var div = document.createElement('div')
+        div.classList.add('col')
+        div.classList.add('s12')
+        div.classList.add('m3')
+        div.id =  elm.order[0]._id;
+
+        var inner = `<div class="card-panel white"><h5 class="center">Ticket ${elm.order[0].local.Tticket}</h5><div class="divider"></div>`;
+        var innerDetalles = ''
+        for(var i =0; i < elm.detail.length; i++){
+            var checked = (elm.detail[i].local.TDestado == 'Tomado')? 'checked="true"': '';
+            
+            innerDetalles += ` <p>
+                <label>
+                    <input type="checkbox" class="${elm.order[0]._id}" ${checked} id="${elm.detail[i]._id}" onclick="actualizarCheck(\'${elm.detail[i]._id}\', this)" />
+                    <span class="black-text">${elm.detail[i].local.TDproducto}</span>
+                    <span class="black-text" style="float: right;padding-right: 50px;">${elm.detail[i].local.TDcantidad}</span>
+                    </label>
+                    </p>`;
+                
+                }
+        div.innerHTML = inner + innerDetalles + `<div class="divider"></div>
+            <span class="black-text s12">Comentario:</span>
+            <p>${elm.order[0].local.Tcomentaro}</p><br><br>
+            <button class="btn green col s12 m6 offset-m3 disabled" id="btn-${elm.order[0]._id}" onclick="terminarTicket(\'${elm.order[0]._id}\')">Entregar</button>
             <br><br>
-        </div>
-    </div>`;
-    document.getElementById('divOrders').appendChild();
-        actualizarHeith();
+            </div>`;
+
+        console.log(div)
+        // document.getElementById('divOrders').appendChild(div);
+        document.getElementById('divOrders').append(div);
+        actualizarHeigth();
     });
     socket.on('removeTicket', function(emt){
         document.getElementById(emt.ticket).remove()
-        actualizarHeith();
+        actualizarHeigth();
     });
 
     function terminarTicket(idTicket){
         socket.emit('endTicket', {ticket: idTicket});
+        actualizarHeigth();
     }
-    actualizarHeith();
+    actualizarHeigth();
 </script>
 </body>
 </html>

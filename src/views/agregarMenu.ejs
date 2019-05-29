@@ -43,6 +43,21 @@
           </button>
         </form>
             </div>
+            <h4 class="Rheader center-align">Configuración</h4>
+            <div class="container">
+                <div class="divider"></div>
+                <div class="Rheader center-align">
+                    <form class="Aform" action="/configuracion" method="POST" enctype="multipart/form-data">
+                        <div class="input-field">
+                            <input type="number" name="IVA" required="" value="<%= iva %>">
+                            <label>IVA cobrado:</label>
+                        </div>
+                        <button class="btn col s12 red darked-3" style="margin-bottom: 10px;" type="submit">
+                                Actualizar
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <div class="col s12 m6" >

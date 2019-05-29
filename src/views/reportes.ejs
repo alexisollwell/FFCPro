@@ -7,9 +7,9 @@
     <div class="container">
         <canvas id="myChart"></canvas>
     </div>
-    <div class="container">
+    <!-- <div class="container">
         <canvas id="LaChart"></canvas>
-    </div>
+    </div> -->
     <% include ./partials/Initialization %>
     <script>
         let myChart = document.getElementById('myChart').getContext("2d");
@@ -27,19 +27,19 @@
             options:{}
         });
 
-        let LaChart = document.getElementById('LaChart').getContext("2d");
-        var LCuantos = "<%= listaCuantos %>".split(',');
-        let barChart = new Chart(LaChart,{
-            type:'bar',
-            data:{
-                labels: ["Terminados","Preparando"],
-                datasets:[{
-                    label:'Estado',
-                    data:LCuantos
-                }]
-            },
-            options:{}
-        });
+        // let LaChart = document.getElementById('LaChart').getContext("2d");
+        // var LCuantos = "<%= listaCuantos %>".split(',');
+        // let barChart = new Chart(LaChart,{
+        //     type:'bar',
+        //     data:{
+        //         labels: ["Terminados","Preparando"],
+        //         datasets:[{
+        //             label:'Estado',
+        //             data:LCuantos
+        //         }]
+        //     },
+        //     options:{}
+        // });
     </script>
 </body>
 </html>

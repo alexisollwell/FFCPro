@@ -2,6 +2,7 @@ const Menu = require("../app/models/menu");
 const UsersData = require("../app/models/user");
 const Order = require("../app/models/ticket");
 const orderItem = require("../app/models/ticketDetalle");
+const configuraciones = require("../app/models/configuraciones");
 const { randomNumber } = require('../helpers/libs');
 const listFecha =[];
 const listCantidad =[];
@@ -90,11 +91,19 @@ module.exports= (app,passport)=>{
     }));
 
     app.get('/menu', islogged ,(req,res)=>{
+        var iva = 8;
+        configuraciones.findOne().then((elm)=>{ 
+            if(elm != null){
+                iva = elm.local.CIva;                
+            }
+        });
+
         Menu.find()
         .then(function(mn) {
             res.render('menu', {
                 title: "Menu",
                 items: mn,
+                iva: iva,
                 user:req.user,
                 message: req.flash('signupMessage')
             });
@@ -105,25 +114,27 @@ module.exports= (app,passport)=>{
 
     app.post('/menu',islogged, async(req,res) =>{
 
+        var ivaC = 8;
+        configuraciones.findOne().then((elmc)=>{ 
+            if(elmc != null){
+                ivaC = elmc.local.CIva;                
+            }
+        });
+
         const idOrder = randomNumber();
-        var total = 0;
         var TDate = new Date();
-        console.log(req.body.Productos);
-        // var list = req.body.Productos.split('|');
-        // console.log(list.length());
-        req.body.Productos.forEach( elm => {
-            elm = elm.replace(/\'/g,'"');
-            var elmJS = JSON.parse(elm.toString());
+        const dataProductos = JSON.parse(req.body.Productos);        
+        var total = 0;        
+        dataProductos.Productos.forEach( (elm) => {
             //add each product to order
             const OrderItem = new orderItem();
             OrderItem.local.TDticket = idOrder;
-            OrderItem.local.TDproducto = elmJS.nombre;
-            OrderItem.local.TDcantidad= elmJS.cantidad;
-            OrderItem.local.TDprecio = elmJS.precio;
+            OrderItem.local.TDproducto = elm.nombre;
+            OrderItem.local.TDcantidad= elm.Cantidad;
+            OrderItem.local.TDprecio = elm.precio;
             OrderItem.local.TDestado="Pendiente";
             OrderItem.save();
-            total = total + (elmJS.cantidad*elmJS.precio);
-            console.log(elmJS);
+            total += (elm.precio);
         });
         const NewOrder = new Order();
         NewOrder.local.Tticket = idOrder;
@@ -139,6 +150,7 @@ module.exports= (app,passport)=>{
             res.render('menu', {
                 title: "Menu",
                 items: mn,
+                iva: ivaC,
                 user:req.user,
                 message: "Guardado correctamente con folio " + idOrder,
                 ord: idOrder
@@ -257,11 +269,18 @@ module.exports= (app,passport)=>{
     });
 
     app.get('/menu/agregar', islogged, (req,res)=>{
+        var iva = 8;
+        configuraciones.findOne().then((elm)=>{ 
+            if(elm != null){
+                iva = elm.local.CIva;                
+            }
+        });
         Menu.find()
         .then(function(doc) {
             res.render('agregarMenu', {
                 title: "Productos",
                 items: doc,
+                iva:iva,
                 user:req.user,
                 message: req.flash('signupMessage')
             });
@@ -310,6 +329,22 @@ module.exports= (app,passport)=>{
         saveProduct();
     });
     
+    app.post('/configuracion', islogged, (req,res)=>{
+        var newIVA = req.body.IVA;
+
+        configuraciones.findOne().then((elm)=>{
+            if(elm == null){
+                const newConfig = new configuraciones();
+                newConfig.local.CIva  = newIVA;
+                newConfig.save();
+            }else{
+                elm.local.CIva = newIVA;
+                elm.save();
+            }
+        });
+        res.redirect('/menu/agregar');
+    })
+
     app.get('/EditMenu/:producto_id', islogged ,(req,res)=>{
         var id = req.params.producto_id;
         Menu.findById(id, function(err, doc) {

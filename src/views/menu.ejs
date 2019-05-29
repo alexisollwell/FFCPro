@@ -14,6 +14,17 @@
                         <h5 id="h_numTicket">Ticket</h5>
                         <div class="divider"></div>
                         <div id="prodOrd" class="row">
+                            <table >
+                                <thead>
+                                    <tr >
+                                        <th style="padding:0; padding-left: 15px;"><label>Producto</label></th>
+                                        <th style="padding:0;">Can</th>
+                                        <th style="padding:0;">$</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbdTicketDetalle">
+                                </tbody>
+                            </table>
                         </div>
                         <div class="divider"></div>
                         <h5 id="h_total">Total: $0</h5>
@@ -21,8 +32,9 @@
                     </div>
                 </div>
                     <div class="col s12">
-                        <form action="/menu" method="POST">
+                        <form action="/menu" method="POST" onkeypress="if (e.keyCode == 13) {e.preventDefault(); return false;}">
                             <div id="MenuForm" class="MenuForm" style="display: none;">
+                                <input type="text" name="Productos" id="Productos"/>
                             </div>
                             <div class="row ">
                                 <div class="col s10 offset-s1 white z-depth-3">
@@ -30,11 +42,12 @@
                                         <input type="text" name="comentario" id="com" />
                                         <label for="com">Comentario</label>
                                     </div>
+                                    <button type="submit" class="hide" id="btn-send"></button>
                                 </div>
                             </div>
-                            <button type="submit" class="green col s6 btn">Guardar</button>
                         </form>
-                        <button class="red col s6 btn" onclick="reiniciarCuenta()">Descartar</button>
+                        <button class="green col s4 btn" onclick="createTicket()">Guardar</button>
+                        <button class="red col s4 offset-s2 btn" onclick="reiniciarCuenta()">Descartar</button>
                     </div>
                 </div>
             <div class="col s12 m8 white rounded" >
@@ -52,17 +65,46 @@
                                         $ <%= prd.local.Mprecio %></span>
                             </div>
                         </div>
-                    </div>
+                    </div>  
                 </div>
                 <% }); %>
             </div>
             
         </div>
     </div>
+    <div id="modalTicket" class="modal modalSmallTicket" >
+        <div class="modal-content">
+            <div class="col s12">
+                <div style="width: 50%;margin-left: 38%;">
+                    <img class="logoimg" src="/images/roast-chicken.png" alt="" width="50" height="50">
+                </div>
+            </div>
+            <h6 class="center">Faustos Fried Chicken</h6>
+            <label style="width: 100%; display: inline-block;" class="center" id="lblDate"></label>
+            <label>Cajero</label><br>
+            <label class="black-text"><%= user.local.UName %> <%= user.local.ULastName %></label><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="padding:0;">Cant</th>
+                        <th style="padding:0;">Productos</th>
+                        <th style="padding:0;">$</th>
+                    </tr>
+                </thead>
+                <tbody id="tbdProductos">                                    
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-green btn-flat" onclick="sendForm()">Aceptar</a>
+        </div>
+    </div>
+
 </body>
 <script src="/JS/Cocina.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    var iva = <%= iva %>
     var socket = io.connect('http://localhost:3000');
     function actualizarCheck(id){
         socket.emit('orderAdded', {idOrder : id});
@@ -85,6 +127,10 @@
 }
 .redHover:hover{
     background-color: red;
+}
+
+.modalSmallTicket{
+    width: 270px !important;
 }
 </style>
 </html>
