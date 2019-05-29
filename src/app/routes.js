@@ -6,6 +6,9 @@ const { randomNumber } = require('../helpers/libs');
 const listFecha =[];
 const listCantidad =[];
 const listCuantos= [];
+const list2= [];
+// var terminado =0;
+// var noterm = 0;
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -40,8 +43,6 @@ module.exports= (app,passport)=>{
     });
 
     app.get('/Reportes',islogged,ChartData, async(req,res)=>{     
-        console.log(listFecha);
-        console.log(listCantidad);
         res.render('reportes', {
             title: "Reportes",
             user:req.user,
@@ -50,12 +51,12 @@ module.exports= (app,passport)=>{
         });
     });
 
-    app.post('/ReportesSegundo',islogged,SegundoChart, async(req,res)=>{     
-        console.log(listCuantos);
+    app.get('/ReportesSegundo',islogged,SegundoChart, async(req,res)=>{
+        console.log(req.data);     
         res.render('reportesSegunda', {
             title: "Reportes",
             user:req.user,
-            listaCuantos:listCuantos
+            listaCuantos:req.data
         });
     });
 
@@ -409,49 +410,37 @@ const SegundoChart = async(req,res,next)=>{
     while(listCuantos.length > 0){
         listCantidad.pop(); 
     }
-    var terminado =0;
-    var noterm = 0;
+    while(list2.length > 0){
+        list2.pop(); 
+    }  
     await Order.find()
         .then(function(doc) {       
             doc.forEach((elm)=>{
-                if(elm.local.Testado="Terminado"){
-                    terminado=terminado+1;
+                if(elm.local.Testado=="Terminado"){
+                    listCuantos.push(elm.local.Ttotal)
                 }else{
-                    noterm=noterm+1;
+                    list2.push(elm.local.Ttotal)
                 }
             });
-            listCuantos.push(terminado);
-            listCuantos.push(noterm);
+            req.data=[listCuantos.length,list2.length];
         });
-        next();
+    next();
 }
 const ChartData = async(req,res,next)=>{
-    while(listCuantos.length > 0){
-        listCantidad.pop(); 
-    }
     while(listCantidad.length > 0){
         listCantidad.pop(); 
     }
     while(listFecha.length > 0){
         listFecha.pop(); 
     }
-    var terminado =0;
-    var noterm = 0;
     await Order.find()
         .then(function(doc) {       
             doc.forEach((elm)=>{
-                if(elm.local.Testado="Terminado"){
-                    terminado=terminado+1;
-                }else{
-                    noterm=noterm+1;
-                }
                 listFecha.push(elm.local.TFecha);
                 listCantidad.push(elm.local.Ttotal);
             });
-            listCuantos.push(terminado);
-            listCuantos.push(noterm);
         });
-        next();
+    next();
 }
 
 const AllOrders= async(req,res,next)=>{
