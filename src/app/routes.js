@@ -7,6 +7,9 @@ const { randomNumber } = require('../helpers/libs');
 const listFecha =[];
 const listCantidad =[];
 const listCuantos= [];
+const list2= [];
+// var terminado =0;
+// var noterm = 0;
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -41,14 +44,20 @@ module.exports= (app,passport)=>{
     });
 
     app.get('/Reportes',islogged,ChartData, async(req,res)=>{     
-        console.log(listFecha);
-        console.log(listCantidad);
         res.render('reportes', {
             title: "Reportes",
             user:req.user,
             listaFechas:listFecha,
-            listaCantidad:listCantidad,
-            listaCuantos:listCuantos
+            listaCantidad:listCantidad
+        });
+    });
+
+    app.get('/ReportesSegundo',islogged,SegundoChart, async(req,res)=>{
+        console.log(req.data);     
+        res.render('reportesSegunda', {
+            title: "Reportes",
+            user:req.user,
+            listaCuantos:req.data
         });
     });
 
@@ -432,34 +441,41 @@ module.exports= (app,passport)=>{
         res.redirect('/menu/agregar');
     })
 };
-
-const ChartData = async(req,res,next)=>{
+const SegundoChart = async(req,res,next)=>{
     while(listCuantos.length > 0){
         listCantidad.pop(); 
     }
+    while(list2.length > 0){
+        list2.pop(); 
+    }  
+    await Order.find()
+        .then(function(doc) {       
+            doc.forEach((elm)=>{
+                if(elm.local.Testado=="Terminado"){
+                    listCuantos.push(elm.local.Ttotal)
+                }else{
+                    list2.push(elm.local.Ttotal)
+                }
+            });
+            req.data=[listCuantos.length,list2.length];
+        });
+    next();
+}
+const ChartData = async(req,res,next)=>{
     while(listCantidad.length > 0){
         listCantidad.pop(); 
     }
     while(listFecha.length > 0){
         listFecha.pop(); 
     }
-    var terminado =0;
-    var noterm = 0;
     await Order.find()
         .then(function(doc) {       
             doc.forEach((elm)=>{
-                if(elm.local.Testado="Terminado"){
-                    terminado=terminado+1;
-                }else{
-                    noterm=noterm+1;
-                }
                 listFecha.push(elm.local.TFecha);
                 listCantidad.push(elm.local.Ttotal);
             });
-            listCuantos.push(terminado);
-            listCuantos.push(noterm);
         });
-        next();
+    next();
 }
 
 const AllOrders= async(req,res,next)=>{
